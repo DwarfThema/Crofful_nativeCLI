@@ -35,8 +35,8 @@ export default function App() {
     <AppearanceProvider>
       <NavigationContainer>
         <LoggedOutNav />
+        <StatusBar style="auto" />
       </NavigationContainer>
-      <StatusBar style="auto" />
     </AppearanceProvider>
   );
 }
