@@ -6,6 +6,7 @@ import { Asset } from "expo-asset";
 import LoggedOutNav from "./navigators/LoggedOutNav";
 import { NavigationContainer } from "@react-navigation/native";
 import { Appearance, AppearanceProvider } from "react-native-appearance";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -29,14 +30,13 @@ export default function App() {
       />
     );
   }
-  const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-    console.log(colorScheme);
-  });
+  const subscription = Appearance.addChangeListener(({ colorScheme }) => {});
   return (
     <AppearanceProvider>
       <NavigationContainer>
         <LoggedOutNav />
       </NavigationContainer>
+      <StatusBar style="auto" />
     </AppearanceProvider>
   );
 }

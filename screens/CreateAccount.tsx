@@ -1,12 +1,13 @@
 import React from "react";
-import { Text, View } from "react-native";
+import styled from "styled-components/native";
+
+const Container = styled.View`
+  flex: 1;
+  background-color: white;
+`;
 
 const CreateAccount = () => {
-  return (
-    <View>
-      <Text>회원가입 스크린</Text>
-    </View>
-  );
+  return <Container></Container>;
 };
 
 export default CreateAccount;

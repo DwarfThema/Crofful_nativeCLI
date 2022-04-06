@@ -7,4 +7,10 @@ declare module "styled-components" {
     fontColor: string;
     bgColor: string;
   }
+  export interface ButtonTheme {
+    disabledBgColor: string;
+    borderColor: string;
+    fontColor: string;
+    bgColor: string;
+  }
 }

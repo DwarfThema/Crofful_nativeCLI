@@ -23,15 +23,19 @@ const Logo = styled.Image`
   margin-bottom: 10px;
 `;
 
-const CreateAccount = styled.View`
-  background-color: ${buttonTheme.bgColor};
-  padding: 10px 40px;
-  border-radius: 7px;
+const CreateAccount = styled.TouchableOpacity`
+  background-color: ${(props) =>
+    props.disabled ? buttonTheme.disabledBgColor : buttonTheme.bgColor};
+  padding: 12px 10px;
+  border-radius: 5px;
+  width: 80%;
+  margin-top: 5px;
 `;
 const CreatAccountText = styled.Text`
   color: ${buttonTheme.fontColor};
   font-size: 15px;
   font-weight: 900;
+  text-align: center;
 `;
 
 const LoginLink = styled.Text`
@@ -54,11 +58,9 @@ const Welcome = ({ navigation }: any) => {
         resizeMode="contain"
         source={require("../assets/crofful_logo_Wt.png")}
       />
-      <TouchableOpacity onPress={goToCreateAccount}>
-        <CreateAccount>
-          <CreatAccountText>회원가입</CreatAccountText>
-        </CreateAccount>
-      </TouchableOpacity>
+      <CreateAccount disabled={false} onPress={goToCreateAccount}>
+        <CreatAccountText>회원가입</CreatAccountText>
+      </CreateAccount>
       <TouchableOpacity onPress={goToLogin}>
         <LoginLink>로그인</LoginLink>
       </TouchableOpacity>
