@@ -27,7 +27,11 @@ const AuthLayout = ({ children }: any) => {
     Keyboard.dismiss();
   };
   return (
-    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={dismissKeyboard}>
+    <TouchableWithoutFeedback
+      style={{ flex: 1 }}
+      onPress={dismissKeyboard}
+      disabled={Platform.OS === "web" ? true : false}
+    >
       <Container>
         <BgLogo />
         <KeyboardAvoidingView

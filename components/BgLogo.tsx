@@ -8,7 +8,6 @@ const SBgLogo = styled.Image`
   max-width: 100%;
   height: 100%;
   z-index: -1;
-  margin-bottom: 50px;
 `;
 
 const BgLogo = () => (
