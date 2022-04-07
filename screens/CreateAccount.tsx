@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import { TextInput } from "react-native";
-import styled from "styled-components/native";
+import { KeyboardAvoidingView, Platform } from "react-native";
 import AuthButton from "../components/auth/AuthButton";
 import AuthLayout from "../components/auth/AuthLayout";
+import { TextInput } from "../components/auth/AuthShared";
 import BgLogo from "../components/BgLogo";
 
 const CreateAccount = () => {
@@ -13,8 +13,8 @@ const CreateAccount = () => {
   const nameRef = useRef(null);
   const emailRef = useRef(null);
 
-  const onNext = (nextOne: any) => {
-    nextOne?.current?.focus();
+  const onNext = (nextRef: any) => {
+    nextRef?.current?.focus();
   };
   const onDone = () => {
     alert`done!`;
@@ -22,48 +22,42 @@ const CreateAccount = () => {
 
   return (
     <AuthLayout>
-      <BgLogo />
       <TextInput
         autoFocus
         ref={idRef}
         placeholder="아이디"
         placeholderTextColor="gray"
+        keyboardType="name-phone-pad"
         returnKeyType="next"
-        style={{ backgroundColor: "white", width: "80%" }}
+        autoCorrect={false}
         onSubmitEditing={() => onNext(passwordRef)}
       />
       <TextInput
         ref={passwordRef}
+        secureTextEntry
         placeholder="비밀번호"
         placeholderTextColor="gray"
-        secureTextEntry
+        keyboardType="name-phone-pad"
         returnKeyType="next"
-        style={{ backgroundColor: "white", width: "80%" }}
-        onSubmitEditing={() => onNext(passwordConfirmRef)}
-      />
-      <TextInput
-        ref={passwordConfirmRef}
-        placeholder="비밀번호 확인"
-        placeholderTextColor="gray"
-        secureTextEntry
-        returnKeyType="next"
-        style={{ backgroundColor: "white", width: "80%" }}
+        autoCorrect={false}
         onSubmitEditing={() => onNext(nicknameRef)}
       />
       <TextInput
         ref={nicknameRef}
         placeholder="닉네임"
         placeholderTextColor="gray"
+        keyboardType="name-phone-pad"
         returnKeyType="next"
-        style={{ backgroundColor: "white", width: "80%" }}
+        autoCorrect={false}
         onSubmitEditing={() => onNext(nameRef)}
       />
       <TextInput
         ref={nameRef}
         placeholder="성함"
         placeholderTextColor="gray"
+        keyboardType="name-phone-pad"
         returnKeyType="next"
-        style={{ backgroundColor: "white", width: "80%" }}
+        autoCorrect={false}
         onSubmitEditing={() => onNext(emailRef)}
       />
       <TextInput
@@ -72,8 +66,9 @@ const CreateAccount = () => {
         placeholderTextColor="gray"
         keyboardType="email-address"
         returnKeyType="done"
-        style={{ backgroundColor: "white", width: "80%" }}
+        autoCorrect={false}
         onSubmitEditing={onDone}
+        lastOne={true}
       />
       <AuthButton text="회원가입" disabled={true} onPress={() => null} />
     </AuthLayout>

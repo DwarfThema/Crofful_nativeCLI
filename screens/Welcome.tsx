@@ -18,7 +18,6 @@ const Welcome = ({ navigation }: any) => {
   const goToLogin = () => navigation.navigate("로그인");
   return (
     <AuthLayout>
-      <BgLogo />
       <AuthButton
         disabled={false}
         text="회원가입"

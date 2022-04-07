@@ -1,5 +1,12 @@
 import React from "react";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+} from "react-native";
 import styled from "styled-components/native";
+import BgLogo from "../BgLogo";
 
 const Container = styled.View`
   flex: 1;
@@ -9,21 +16,36 @@ const Container = styled.View`
 `;
 
 const Logo = styled.Image`
-  height: 100px;
+  height: 70px;
   width: 100%;
   max-width: 80%;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 `;
 
 const AuthLayout = ({ children }: any) => {
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
   return (
-    <Container>
-      <Logo
-        resizeMode="contain"
-        source={require("../../assets/crofful_logo_Wt.png")}
-      />
-      {children}
-    </Container>
+    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={dismissKeyboard}>
+      <Container>
+        <BgLogo />
+        <KeyboardAvoidingView
+          style={{
+            width: "100%",
+            alignItems: "center",
+          }}
+          behavior="padding"
+          keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
+        >
+          <Logo
+            resizeMode="contain"
+            source={require("../../assets/crofful_logo_Wt.png")}
+          />
+          {children}
+        </KeyboardAvoidingView>
+      </Container>
+    </TouchableWithoutFeedback>
   );
 };
 
