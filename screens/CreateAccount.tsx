@@ -1,13 +1,52 @@
+import { gql, useMutation } from "@apollo/client";
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { KeyboardAvoidingView, Platform } from "react-native";
 import AuthButton from "../components/auth/AuthButton";
 import AuthLayout from "../components/auth/AuthLayout";
 import { TextInput } from "../components/auth/AuthShared";
-import BgLogo from "../components/BgLogo";
 
-const CreateAccount = () => {
-  const { register, handleSubmit, setValue } = useForm();
+const CREATE_ACCOUNT_MUTATION = gql`
+  mutation createAccount(
+    $userName: String!
+    $lastName: String
+    $firstName: String!
+    $email: String!
+    $password: String!
+  ) {
+    createAccount(
+      userName: $userName
+      lastName: $lastName
+      firstName: $firstName
+      email: $email
+      password: $password
+    ) {
+      ok
+      error
+    }
+  }
+`;
+
+const CreateAccount = ({ navigation }: any) => {
+  const { register, handleSubmit, setValue, getValues } = useForm();
+
+  const onCompleted = (data: any) => {
+    const {
+      createAccount: { ok },
+    } = data;
+    const { userName, password } = getValues();
+    if (ok) {
+      navigation.navigate("로그인", {
+        userName,
+        password,
+      });
+    }
+  };
+  const [createAccountMutation, { loading }] = useMutation(
+    CREATE_ACCOUNT_MUTATION,
+    {
+      onCompleted,
+    }
+  );
 
   useEffect(() => {
     register("userName", { required: true });
@@ -29,7 +68,17 @@ const CreateAccount = () => {
     nextRef?.current?.focus();
   };
   const onValid = (data: any) => {
-    console.log(data);
+    if (!loading) {
+      createAccountMutation({
+        variables: {
+          userName: data.userName,
+          password: data.password,
+          lastName: data.nickName,
+          firstName: data.realName,
+          email: data.email,
+        },
+      });
+    }
   };
 
   return (

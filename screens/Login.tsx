@@ -16,7 +16,7 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-const Login = ({ navigation }: any) => {
+const Login = ({ route }: any) => {
   const onCompleted = (data: any) => {
     const {
       login: { ok, token },
@@ -29,7 +29,12 @@ const Login = ({ navigation }: any) => {
     onCompleted,
   });
 
-  const { register, handleSubmit, setValue, watch } = useForm();
+  const { register, handleSubmit, setValue, watch } = useForm({
+    defaultValues: {
+      password: route?.params?.password,
+      userName: route?.params?.userName,
+    },
+  });
 
   useEffect(() => {
     register("userName", { required: true });
@@ -56,6 +61,7 @@ const Login = ({ navigation }: any) => {
   return (
     <AuthLayout>
       <TextInput
+        value={watch("userName")}
         autoFocus
         ref={loginIdRef}
         placeholder="아이디"
@@ -68,6 +74,7 @@ const Login = ({ navigation }: any) => {
         onChangeText={(text) => setValue("userName", text)}
       />
       <TextInput
+        value={watch("password")}
         ref={loginPassRef}
         secureTextEntry
         placeholder="비밀번호"
