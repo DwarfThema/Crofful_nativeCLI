@@ -15,11 +15,7 @@ const LoginLink = styled.Text`
 
 const Welcome = ({ navigation }: any) => {
   const goToCreateAccount = () => navigation.navigate("회원가입");
-  const goToLogin = () =>
-    navigation.navigate("로그인", {
-      userName: "내가 만든 아이디",
-      password: "내가 만든 패스워드",
-    });
+  const goToLogin = () => navigation.navigate("로그인");
   return (
     <AuthLayout>
       <AuthButton

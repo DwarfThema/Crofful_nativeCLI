@@ -8,8 +8,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Appearance, AppearanceProvider } from "react-native-appearance";
 import { StatusBar } from "expo-status-bar";
 import { ApolloProvider, useReactiveVar } from "@apollo/client";
-import client, { isLoggedinVar } from "./apollo";
+import client, { isLoggedinVar, tokenVar } from "./apollo";
 import LoggedInNav from "./navigators/LoggedInNav";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,7 @@ export default function App() {
 
   const isLoggedIn = useReactiveVar(isLoggedinVar);
 
-  const preload = async () => {
+  const preloadAsset = async () => {
     const fontsToLoad = [Ionicons.font];
     const fontPromise = fontsToLoad.map((font: any) => Font.loadAsync(font));
     const imagesToLoad = [require("./assets/crofful_logo_gra.png")];
@@ -27,6 +28,16 @@ export default function App() {
       ...imagesPromises,
     ]);
   };
+
+  const preload = async () => {
+    const token = await AsyncStorage.getItem("token");
+    if (token) {
+      isLoggedinVar(true);
+      tokenVar(token);
+    }
+    return preloadAsset();
+  };
+
   if (loading) {
     return (
       <AppLoading
