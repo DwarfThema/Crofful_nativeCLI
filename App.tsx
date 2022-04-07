@@ -7,12 +7,16 @@ import LoggedOutNav from "./navigators/LoggedOutNav";
 import { NavigationContainer } from "@react-navigation/native";
 import { Appearance, AppearanceProvider } from "react-native-appearance";
 import { StatusBar } from "expo-status-bar";
-import { ApolloProvider } from "@apollo/client";
-import client from "./apollo";
+import { ApolloProvider, useReactiveVar } from "@apollo/client";
+import client, { isLoggedinVar } from "./apollo";
+import LoggedInNav from "./navigators/LoggedInNav";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
   const onFinish = () => setLoading(false);
+
+  const isLoggedIn = useReactiveVar(isLoggedinVar);
+
   const preload = async () => {
     const fontsToLoad = [Ionicons.font];
     const fontPromise = fontsToLoad.map((font: any) => Font.loadAsync(font));
@@ -37,7 +41,7 @@ export default function App() {
     <ApolloProvider client={client}>
       <AppearanceProvider>
         <NavigationContainer>
-          <LoggedOutNav />
+          {isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}
           <StatusBar style="auto" />
         </NavigationContainer>
       </AppearanceProvider>
