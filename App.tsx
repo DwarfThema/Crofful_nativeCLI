@@ -35,6 +35,7 @@ export default function App() {
       isLoggedinVar(true);
       tokenVar(token);
     }
+
     return preloadAsset();
   };
 
