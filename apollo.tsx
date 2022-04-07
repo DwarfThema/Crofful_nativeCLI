@@ -1,6 +1,15 @@
-import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client";
+import { ApolloClient, makeVar, InMemoryCache } from "@apollo/client";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const isLoggedinVar = makeVar(false);
+
+export const logUserIn = async (token: any) => {
+  await AsyncStorage.multiSet([
+    ["token", JSON.stringify(token)],
+    ["loggedIn", JSON.stringify("yes")],
+  ]);
+  isLoggedinVar(true);
+};
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
