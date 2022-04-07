@@ -10,11 +10,11 @@ const CreateAccount = () => {
   const { register, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
-    register("userName");
-    register("password");
-    register("nickName");
-    register("realName");
-    register("email");
+    register("userName", { required: true });
+    register("password", { required: true });
+    register("nickName", { required: true });
+    register("realName", { required: true });
+    register("email", { required: true });
   }, [register]);
 
   const idRef = useRef(null);

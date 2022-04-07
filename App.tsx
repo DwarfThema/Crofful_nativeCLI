@@ -7,6 +7,8 @@ import LoggedOutNav from "./navigators/LoggedOutNav";
 import { NavigationContainer } from "@react-navigation/native";
 import { Appearance, AppearanceProvider } from "react-native-appearance";
 import { StatusBar } from "expo-status-bar";
+import { ApolloProvider } from "@apollo/client";
+import client from "./apollo";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -32,11 +34,13 @@ export default function App() {
   }
   const subscription = Appearance.addChangeListener(({ colorScheme }) => {});
   return (
-    <AppearanceProvider>
-      <NavigationContainer>
-        <LoggedOutNav />
-        <StatusBar style="auto" />
-      </NavigationContainer>
-    </AppearanceProvider>
+    <ApolloProvider client={client}>
+      <AppearanceProvider>
+        <NavigationContainer>
+          <LoggedOutNav />
+          <StatusBar style="auto" />
+        </NavigationContainer>
+      </AppearanceProvider>
+    </ApolloProvider>
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { ActivityIndicator } from "react-native";
 import styled from "styled-components/native";
 import { buttonTheme } from "../../styles";
 
@@ -17,10 +18,14 @@ const ButtonText = styled.Text`
   text-align: center;
 `;
 
-const AuthButton = ({ text, disabled, onPress }: any) => {
+const AuthButton = ({ text, disabled, onPress, loading }: any) => {
   return (
     <Button disabled={disabled} onPress={onPress}>
-      <ButtonText>{text} </ButtonText>
+      {loading ? (
+        <ActivityIndicator color="white" />
+      ) : (
+        <ButtonText>{text} </ButtonText>
+      )}
     </Button>
   );
 };

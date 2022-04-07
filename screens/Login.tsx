@@ -8,8 +8,8 @@ const Login = ({ navigation }: any) => {
   const { register, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
-    register("userName");
-    register("password");
+    register("userName", { required: true });
+    register("password", { required: true });
   }, [register]);
 
   const onValid = (data: any) => {
@@ -18,10 +18,9 @@ const Login = ({ navigation }: any) => {
 
   const loginIdRef = useRef(null);
   const loginPassRef = useRef(null);
-  const onDone = () => {
-    alert`done!`;
-  };
+
   const onNext = (nextRef: any) => {
+    handleSubmit(onValid);
     nextRef?.current?.focus();
   };
   return (
@@ -35,7 +34,7 @@ const Login = ({ navigation }: any) => {
         returnKeyType="next"
         autoCorrect={false}
         autoCapitalize="none"
-        onSubmitEditing={handleSubmit(onValid)}
+        onSubmitEditing={onNext}
         onChangeText={(text) => setValue("userName", text)}
       />
       <TextInput
