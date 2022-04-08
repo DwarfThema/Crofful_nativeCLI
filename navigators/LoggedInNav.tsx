@@ -2,10 +2,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import Feed from "../screens/Feed";
 import Notification from "../screens/Notification";
-import Profile from "../screens/Profile";
 import Search from "../screens/Search";
 import { buttonTheme } from "../styles";
 import Camera from "../screens/Camera";
+import MeProfile from "../screens/MeProfile";
+import StackNavFacotry from "../components/nav/StackNavFactory";
 
 const Tabs = createBottomTabNavigator();
 
@@ -24,25 +25,27 @@ const LoggedInNav = () => {
     >
       <Tabs.Screen
         name="피드"
-        component={Feed}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
           ),
         }}
-      />
+      >
+        {() => <StackNavFacotry screenName="피드" />}
+      </Tabs.Screen>
+
       <Tabs.Screen
         name="찾기"
-        component={Search}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons name="ios-search-outline" size={size} color={color} />
           ),
         }}
-      />
+      >
+        {() => <StackNavFacotry screenName="찾기" />}
+      </Tabs.Screen>
       <Tabs.Screen
         name="카메라"
-        component={Camera}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
@@ -52,10 +55,11 @@ const LoggedInNav = () => {
             />
           ),
         }}
-      />
+      >
+        {() => <StackNavFacotry screenName="카메라" />}
+      </Tabs.Screen>
       <Tabs.Screen
         name="알림"
-        component={Notification}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
@@ -65,16 +69,19 @@ const LoggedInNav = () => {
             />
           ),
         }}
-      />
+      >
+        {() => <StackNavFacotry screenName="알림" />}
+      </Tabs.Screen>
       <Tabs.Screen
-        name="프로필"
-        component={Profile}
+        name="내프로필"
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons name="ios-person-outline" size={size} color={color} />
           ),
         }}
-      />
+      >
+        {() => <StackNavFacotry screenName="내프로필" />}
+      </Tabs.Screen>
     </Tabs.Navigator>
   );
 };

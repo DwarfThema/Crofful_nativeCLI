@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
-const Search = ({ navigation }: any) => {
+const Photo = ({ navigation }: any) => {
   return (
     <View
       style={{
@@ -11,11 +11,11 @@ const Search = ({ navigation }: any) => {
         justifyContent: "center",
       }}
     >
-      <TouchableOpacity onPress={() => navigation.navigate("사진")}>
-        <Text style={{ color: "white" }}>Search</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("타인프로필")}>
+        <Text style={{ color: "white" }}>Photo</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default Search;
+export default Photo;
