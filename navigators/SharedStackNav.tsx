@@ -1,16 +1,22 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import styled from "styled-components/native";
 import Feed from "../screens/Feed";
 import MeProfile from "../screens/MeProfile";
 import Notification from "../screens/Notification";
 import Photo from "../screens/Photo";
 import Search from "../screens/Search";
 import SomeProfile from "../screens/SomeProfile";
-import { buttonTheme } from "../styles";
 
 const Stack = createNativeStackNavigator();
 
-const StackNavFacotry = ({ screenName }: any) => {
+const LogoImage = styled.Image`
+  position: absolute;
+  max-width: 120px;
+  right: 60;
+`;
+
+const SharedStackNav = ({ screenName }: any) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -22,7 +28,18 @@ const StackNavFacotry = ({ screenName }: any) => {
       }}
     >
       {screenName === "피드" ? (
-        <Stack.Screen name="탭피드" component={Feed} />
+        <Stack.Screen
+          name="탭피드"
+          component={Feed}
+          options={{
+            headerTitle: () => (
+              <LogoImage
+                resizeMode="contain"
+                source={require("../assets/crofful_Ologo_blue.png")}
+              />
+            ),
+          }}
+        />
       ) : null}
       {screenName === "찾기" ? (
         <Stack.Screen name="탭찾기" component={Search} />
@@ -39,4 +56,4 @@ const StackNavFacotry = ({ screenName }: any) => {
   );
 };
 
-export default StackNavFacotry;
+export default SharedStackNav;

@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { buttonTheme } from "../styles";
-import StackNavFacotry from "./StackNavFactory";
+import StackNavFacotry from "./SharedStackNav";
 
 const Tabs = createBottomTabNavigator();
 
