@@ -5,6 +5,7 @@ import Notification from "../screens/Notification";
 import Profile from "../screens/Profile";
 import Search from "../screens/Search";
 import { buttonTheme } from "../styles";
+import Camera from "../screens/Camera";
 
 const Tabs = createBottomTabNavigator();
 
@@ -36,6 +37,19 @@ const LoggedInNav = () => {
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons name="ios-search-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="카메라"
+        component={Camera}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name="add-circle-outline"
+              size={size + 15}
+              color={color}
+            />
           ),
         }}
       />
