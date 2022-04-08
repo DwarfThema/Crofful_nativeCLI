@@ -1,12 +1,10 @@
 import {
   ApolloClient,
-  makeVar,
-  InMemoryCache,
   createHttpLink,
+  InMemoryCache,
+  makeVar,
 } from "@apollo/client";
-
 import { setContext } from "@apollo/client/link/context";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const isLoggedinVar = makeVar(false);
@@ -32,7 +30,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   return {
-    Headers: {
+    headers: {
       ...headers,
       token: tokenVar(),
     },

@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { logUserOut } from "../apollo";
 
 const MeProfile = () => {
   return (
@@ -11,7 +12,9 @@ const MeProfile = () => {
         justifyContent: "center",
       }}
     >
-      <Text>MeProfile</Text>
+      <TouchableOpacity onPress={() => logUserOut()}>
+        <Text>MeProfile</Text>
+      </TouchableOpacity>
     </View>
   );
 };
