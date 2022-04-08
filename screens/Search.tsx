@@ -5,14 +5,14 @@ const Search = ({ navigation }: any) => {
   return (
     <View
       style={{
-        backgroundColor: "black",
+        backgroundColor: "white",
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
       }}
     >
       <TouchableOpacity onPress={() => navigation.navigate("사진")}>
-        <Text style={{ color: "white" }}>Search</Text>
+        <Text>Search</Text>
       </TouchableOpacity>
     </View>
   );

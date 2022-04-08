@@ -5,14 +5,14 @@ const Photo = ({ navigation }: any) => {
   return (
     <View
       style={{
-        backgroundColor: "black",
+        backgroundColor: "white",
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
       }}
     >
       <TouchableOpacity onPress={() => navigation.navigate("타인프로필")}>
-        <Text style={{ color: "white" }}>Photo</Text>
+        <Text>Photo</Text>
       </TouchableOpacity>
     </View>
   );

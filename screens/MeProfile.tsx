@@ -5,13 +5,13 @@ const MeProfile = () => {
   return (
     <View
       style={{
-        backgroundColor: "black",
+        backgroundColor: "white",
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
       }}
     >
-      <Text style={{ color: "white" }}>MeProfile</Text>
+      <Text>MeProfile</Text>
     </View>
   );
 };

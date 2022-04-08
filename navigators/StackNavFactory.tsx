@@ -1,17 +1,26 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import Feed from "../../screens/Feed";
-import MeProfile from "../../screens/MeProfile";
-import Notification from "../../screens/Notification";
-import Photo from "../../screens/Photo";
-import Search from "../../screens/Search";
-import SomeProfile from "../../screens/SomeProfile";
+import Feed from "../screens/Feed";
+import MeProfile from "../screens/MeProfile";
+import Notification from "../screens/Notification";
+import Photo from "../screens/Photo";
+import Search from "../screens/Search";
+import SomeProfile from "../screens/SomeProfile";
+import { buttonTheme } from "../styles";
 
 const Stack = createNativeStackNavigator();
 
 const StackNavFacotry = ({ screenName }: any) => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitle: "",
+        headerBackTitleVisible: false,
+        headerTintColor: `gray`,
+        headerStyle: { backgroundColor: "white" },
+        headerShadowVisible: true,
+      }}
+    >
       {screenName === "피드" ? (
         <Stack.Screen name="탭피드" component={Feed} />
       ) : null}

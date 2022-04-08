@@ -1,17 +1,19 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
-const Feed = () => {
+const Feed = ({ navigation }: any) => {
   return (
     <View
       style={{
-        backgroundColor: "black",
+        backgroundColor: "white",
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
       }}
     >
-      <Text style={{ color: "white" }}>feed</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("타인프로필")}>
+        <Text>Feed</Text>
+      </TouchableOpacity>
     </View>
   );
 };

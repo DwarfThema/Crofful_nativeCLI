@@ -1,12 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import Feed from "../screens/Feed";
-import Notification from "../screens/Notification";
-import Search from "../screens/Search";
 import { buttonTheme } from "../styles";
-import Camera from "../screens/Camera";
-import MeProfile from "../screens/MeProfile";
-import StackNavFacotry from "../components/nav/StackNavFactory";
+import StackNavFacotry from "./StackNavFactory";
 
 const Tabs = createBottomTabNavigator();
 
@@ -19,8 +14,7 @@ const LoggedInNav = () => {
         },
         tabBarShowLabel: false,
         tabBarActiveTintColor: `${buttonTheme.bgColor}`,
-        headerTitle: () => false,
-        headerTransparent: true,
+        headerShown: false,
       }}
     >
       <Tabs.Screen
