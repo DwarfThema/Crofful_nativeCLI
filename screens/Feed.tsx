@@ -28,7 +28,7 @@ const FEED_QUERY = gql`
 const Feed = ({ navigation }: any) => {
   const [offset, setOffset] = useState(0);
 
-  const { data, loading, refetch } = useQuery(FEED_QUERY, {
+  const { data, loading, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       offset,
     },
@@ -49,7 +49,13 @@ const Feed = ({ navigation }: any) => {
     <ScreenLayout loading={loading}>
       <FlatList
         onEndReachedThreshold={0.1}
-        onEndReached={() => alert("쓰레솔드가 말하는 끝에 도달했습니다.")}
+        onEndReached={() =>
+          fetchMore({
+            variables: {
+              offset: data?.seeFeed?.length,
+            },
+          })
+        }
         refreshing={refreshing}
         onRefresh={refresh}
         style={{ width: "100%" }}
