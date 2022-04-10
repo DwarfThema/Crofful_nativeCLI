@@ -3,7 +3,7 @@ import { ButtonTheme, DefaultTheme } from "styled-components";
 export const lightTheme: DefaultTheme = {
   fontColor: "white",
   bgColor: "#864DFF",
-  accent: "#0095f6",
+  accent: "#9593FF",
   borderColor: "rgb(219, 219, 219)",
 };
 

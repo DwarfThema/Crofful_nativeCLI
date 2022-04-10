@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { buttonTheme } from "../styles";
+import { lightTheme } from "../styles";
 import StackNavFacotry from "./SharedStackNav";
 
 const Tabs = createBottomTabNavigator();
@@ -13,7 +13,7 @@ const LoggedInNav = () => {
           backgroundColor: "white",
         },
         tabBarShowLabel: false,
-        tabBarActiveTintColor: `${buttonTheme.bgColor}`,
+        tabBarActiveTintColor: `${lightTheme.accent}`,
         headerShown: false,
       }}
     >

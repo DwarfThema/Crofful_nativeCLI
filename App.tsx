@@ -11,6 +11,8 @@ import { ApolloProvider, useReactiveVar } from "@apollo/client";
 import client, { isLoggedinVar, tokenVar } from "./apollo";
 import LoggedInNav from "./navigators/LoggedInNav";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ThemeProvider } from "styled-components/native";
+import { darkTheme, lightTheme } from "./styles";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -53,8 +55,10 @@ export default function App() {
     <ApolloProvider client={client}>
       <AppearanceProvider>
         <NavigationContainer>
-          {isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}
-          <StatusBar style="auto" />
+          <ThemeProvider theme={lightTheme}>
+            {isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}
+            <StatusBar style="auto" />
+          </ThemeProvider>
         </NavigationContainer>
       </AppearanceProvider>
     </ApolloProvider>
