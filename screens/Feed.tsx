@@ -1,19 +1,13 @@
 import { gql, useQuery } from "@apollo/client";
 import React, { useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { FlatList } from "react-native";
 import Photo from "../components/Photo";
 import ScreenLayout from "../components/ScreenLayout";
 import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from "../fragments";
 
 const FEED_QUERY = gql`
-  query seeFeed {
-    seeFeed {
+  query seeFeed($offset: Int!) {
+    seeFeed(offset: $offset) {
       ...PhotoFragment
       user {
         userName
@@ -32,7 +26,13 @@ const FEED_QUERY = gql`
 `;
 
 const Feed = ({ navigation }: any) => {
-  const { data, loading, refetch } = useQuery(FEED_QUERY);
+  const [offset, setOffset] = useState(0);
+
+  const { data, loading, refetch } = useQuery(FEED_QUERY, {
+    variables: {
+      offset,
+    },
+  });
 
   const renderPhoto = ({ item: photo }: any) => {
     return <Photo {...photo} />;
@@ -48,6 +48,8 @@ const Feed = ({ navigation }: any) => {
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        onEndReachedThreshold={0.1}
+        onEndReached={() => alert("쓰레솔드가 말하는 끝에 도달했습니다.")}
         refreshing={refreshing}
         onRefresh={refresh}
         style={{ width: "100%" }}
