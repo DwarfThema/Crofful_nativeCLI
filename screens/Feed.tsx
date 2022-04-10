@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -32,15 +32,24 @@ const FEED_QUERY = gql`
 `;
 
 const Feed = ({ navigation }: any) => {
-  const { data, loading } = useQuery(FEED_QUERY);
+  const { data, loading, refetch } = useQuery(FEED_QUERY);
 
   const renderPhoto = ({ item: photo }: any) => {
     return <Photo {...photo} />;
   };
 
+  const [refreshing, setRefreshing] = useState(false);
+  const refresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
+
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        refreshing={refreshing}
+        onRefresh={refresh}
         style={{ width: "100%" }}
         data={data?.seeFeed}
         keyExtractor={(photo: any) => photo.id}

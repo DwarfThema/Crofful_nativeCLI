@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator();
 const LogoImage = styled.Image`
   position: absolute;
   max-width: 120px;
-  right: 60;
+  right: 60px;
 `;
 
 const SharedStackNav = ({ screenName }: any) => {
