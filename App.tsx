@@ -8,11 +8,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Appearance, AppearanceProvider } from "react-native-appearance";
 import { StatusBar } from "expo-status-bar";
 import { ApolloProvider, useReactiveVar } from "@apollo/client";
-import client, { isLoggedinVar, tokenVar } from "./apollo";
+import client, { cache, isLoggedinVar, tokenVar } from "./apollo";
 import LoggedInNav from "./navigators/LoggedInNav";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ThemeProvider } from "styled-components/native";
 import { darkTheme, lightTheme } from "./styles";
+import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -37,7 +38,10 @@ export default function App() {
       isLoggedinVar(true);
       tokenVar(token);
     }
-
+    await persistCache({
+      cache: cache,
+      storage: new AsyncStorageWrapper(AsyncStorage),
+    });
     return preloadAsset();
   };
 
