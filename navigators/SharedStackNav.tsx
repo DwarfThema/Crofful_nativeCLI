@@ -1,7 +1,9 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import styled from "styled-components/native";
+import Comments from "../screens/Comments";
 import Feed from "../screens/Feed";
+import Likes from "../screens/Likes";
 import MeProfile from "../screens/MeProfile";
 import Notification from "../screens/Notification";
 import Photo from "../screens/Photo";
@@ -52,6 +54,8 @@ const SharedStackNav = ({ screenName }: any) => {
       ) : null}
       <Stack.Screen name="타인프로필" component={SomeProfile} />
       <Stack.Screen name="사진" component={Photo} />
+      <Stack.Screen name="좋아요" component={Likes} />
+      <Stack.Screen name="댓글" component={Comments} />
     </Stack.Navigator>
   );
 };

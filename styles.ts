@@ -1,5 +1,10 @@
 import { ButtonTheme, DefaultTheme } from "styled-components";
 
+export const mainTheme = {
+  mainColor: "#9593FF",
+  heartColor: "tomato",
+};
+
 export const lightTheme: DefaultTheme = {
   fontColor: "white",
   bgColor: "#864DFF",

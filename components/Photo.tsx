@@ -1,12 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Image } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { useWindowDimensions } from "react-native";
 import styled from "styled-components/native";
+import { Ionicons } from "@expo/vector-icons";
+import { lightTheme, mainTheme } from "../styles";
 
 const Contiainer = styled.View``;
 const Header = styled.View`
-  padding: 10px 5px;
+  padding: 10px 10px;
   flex-direction: row;
   align-items: center;
 `;
@@ -31,10 +33,35 @@ const GameName = styled.Text`
 
 const TouchableToGame = styled.TouchableOpacity``;
 const File = styled.Image``;
-const Actions = styled.TouchableOpacity``;
-const Cpation = styled.View``;
-const CaptionText = styled.Text``;
-const Likes = styled.Text``;
+const Actions = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+const LikeAndMessage = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 10px;
+`;
+
+const Action = styled.TouchableOpacity`
+  margin-left: 7px;
+`;
+
+const Cpation = styled.View`
+  flex-direction: row;
+`;
+const CaptionText = styled.Text`
+  margin-left: 5px;
+`;
+const Likes = styled.Text`
+  margin: 5px 0px;
+  font-weight: 600;
+`;
+
+const ExtraContainer = styled.View`
+  padding: 10px;
+`;
 
 interface IPhoto {
   id: number;
@@ -84,17 +111,40 @@ const Photo = ({
         style={{ width: deviceWidth, height: deviceHeight - 500 }}
         source={{ uri: file }}
       />
-      <Actions>
-        <Actions />
-        <Actions />
-      </Actions>
-      <Likes> {`${likes}개의 좋아요`} </Likes>
-      <Cpation>
-        <TouchableToProfile onPress={() => navigation.navigate("타인프로필")}>
-          <Username> {user.userName} </Username>
-        </TouchableToProfile>
-        <CaptionText> {caption} </CaptionText>
-      </Cpation>
+      <ExtraContainer>
+        <Actions>
+          <TouchableOpacity onPress={() => navigation.navigate("좋아요")}>
+            <Likes>
+              {" "}
+              {likes === 0
+                ? "좋아요가 없습니다 🥲"
+                : `${likes}개의 좋아요`}{" "}
+            </Likes>
+          </TouchableOpacity>
+          <LikeAndMessage>
+            <Action>
+              <Ionicons
+                style={{ color: isLiked ? `${mainTheme.heartColor}` : "black" }}
+                name={isLiked ? "heart" : "heart-outline"}
+                size={28}
+              />
+            </Action>
+            <Action onPress={() => navigation.navigate("댓글")}>
+              <Ionicons
+                style={{ color: "black" }}
+                name={"chatbubble-outline"}
+                size={26}
+              />
+            </Action>
+          </LikeAndMessage>
+        </Actions>
+        <Cpation>
+          <TouchableToProfile onPress={() => navigation.navigate("타인프로필")}>
+            <Username> {user.userName} </Username>
+          </TouchableToProfile>
+          <CaptionText> {caption} </CaptionText>
+        </Cpation>
+      </ExtraContainer>
     </Contiainer>
   );
 };
