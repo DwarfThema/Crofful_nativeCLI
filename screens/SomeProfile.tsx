@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 
-const SomeProfile = () => {
+const SomeProfile = ({ navigation, route }: any) => {
+  useEffect(() => {
+    navigation.setOptions({
+      title: route?.params?.userName,
+    });
+  }, []);
   return (
     <View
       style={{

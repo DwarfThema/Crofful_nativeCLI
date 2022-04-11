@@ -1,8 +1,17 @@
-import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { logUserOut } from "../apollo";
+import useMe from "../hooks/useMe";
 
-const MeProfile = () => {
+const MeProfile = ({ navigation }: any) => {
+  const { data } = useMe();
+  useEffect(() => {
+    navigation.setOptions({
+      title: data?.me?.userName,
+    });
+  }, []);
+
   return (
     <View
       style={{

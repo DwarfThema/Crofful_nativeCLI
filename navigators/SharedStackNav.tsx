@@ -22,7 +22,6 @@ const SharedStackNav = ({ screenName }: any) => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTitle: "",
         headerBackTitleVisible: false,
         headerTintColor: `gray`,
         headerStyle: { backgroundColor: "white" },
@@ -52,7 +51,11 @@ const SharedStackNav = ({ screenName }: any) => {
       {screenName === "내프로필" ? (
         <Stack.Screen name="탭내프로필" component={MeProfile} />
       ) : null}
-      <Stack.Screen name="타인프로필" component={SomeProfile} />
+      <Stack.Screen
+        options={{ title: "🫥" }}
+        name="타인프로필"
+        component={SomeProfile}
+      />
       <Stack.Screen name="사진" component={Photo} />
       <Stack.Screen name="좋아요" component={Likes} />
       <Stack.Screen name="댓글" component={Comments} />
