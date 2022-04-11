@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import styled from "styled-components/native";
 import BgLogo from "../BgLogo";
+import DismissKeyboard from "../dismissKeyboard";
 
 const Container = styled.View`
   flex: 1;
@@ -23,15 +24,8 @@ const Logo = styled.Image`
 `;
 
 const AuthLayout = ({ children }: any) => {
-  const dismissKeyboard = () => {
-    Keyboard.dismiss();
-  };
   return (
-    <TouchableWithoutFeedback
-      style={{ flex: 1 }}
-      onPress={dismissKeyboard}
-      disabled={Platform.OS === "web" ? true : false}
-    >
+    <DismissKeyboard>
       <Container>
         <BgLogo />
         <KeyboardAvoidingView
@@ -49,7 +43,7 @@ const AuthLayout = ({ children }: any) => {
           {children}
         </KeyboardAvoidingView>
       </Container>
-    </TouchableWithoutFeedback>
+    </DismissKeyboard>
   );
 };
 
