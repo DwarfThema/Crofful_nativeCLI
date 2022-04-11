@@ -75,6 +75,10 @@ interface IPhoto {
   comments?: any[];
 }
 
+interface Inavigation {
+  navigation?: any;
+}
+
 const TOGGLE_LIKE_MUTATION = gql`
   mutation toggleLike($id: Int!) {
     toggleLike(id: $id) {
@@ -126,7 +130,7 @@ const Photo = ({
   });
 
   const { width: deviceWidth, height: deviceHeight } = useWindowDimensions();
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const [imageHeight, setImageHeight] = useState(deviceHeight - 500);
   useEffect(() => {
     Image.getSize(file, (width, height) => {
@@ -156,9 +160,11 @@ const Photo = ({
       />
       <ExtraContainer>
         <Actions>
-          <TouchableOpacity onPress={() => navigation.navigate("좋아요")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("좋아요", { photoId: id })}
+          >
             <Likes>
-              {likes === 0 ? "좋아요가 없습니다 🥲" : `${likes}개의 좋아요`}{" "}
+              {likes === 0 ? "좋아요가 없습니다 🥲" : `${likes}개의 좋아요`}
             </Likes>
           </TouchableOpacity>
           <LikeAndMessage>
