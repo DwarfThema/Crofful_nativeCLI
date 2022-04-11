@@ -137,7 +137,12 @@ const Photo = ({
       setImageHeight(height / 3);
     });
   }, []);
-
+  const goToProfile = () => {
+    navigation.navigate("타인프로필", {
+      id: user.id,
+      userName: user.userName,
+    });
+  };
   return (
     <Contiainer>
       <Header>
@@ -145,7 +150,7 @@ const Photo = ({
           <UserAvatar resizeMode="cover" source={{ uri: user.avatar }} />
         </TouchableToStory>
         <HeaderTextContainer>
-          <TouchableToProfile onPress={() => navigation.navigate("타인프로필")}>
+          <TouchableToProfile onPress={goToProfile}>
             <Username> {user.userName} </Username>
           </TouchableToProfile>
           <TouchableToGame>
@@ -186,7 +191,7 @@ const Photo = ({
           </LikeAndMessage>
         </Actions>
         <Cpation>
-          <TouchableToProfile onPress={() => navigation.navigate("타인프로필")}>
+          <TouchableToProfile onPress={goToProfile}>
             <Username> {user.userName} </Username>
           </TouchableToProfile>
           <CaptionText> {caption} </CaptionText>

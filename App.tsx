@@ -13,7 +13,11 @@ import LoggedInNav from "./navigators/LoggedInNav";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ThemeProvider } from "styled-components/native";
 import { darkTheme, lightTheme } from "./styles";
-import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
+import {
+  AsyncStorageWrapper,
+  CachePersistor,
+  persistCache,
+} from "apollo3-cache-persist";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -38,10 +42,12 @@ export default function App() {
       isLoggedinVar(true);
       tokenVar(token);
     }
-    await persistCache({
-      cache: cache,
+    const persistor = new CachePersistor({
+      cache,
       storage: new AsyncStorageWrapper(AsyncStorage),
     });
+    await persistor.purge();
+    //persistor.purge 를 이용하면 쿼리 변경시 필요없는 persistor 데이터를 삭제 할 수 있다.
     return preloadAsset();
   };
 

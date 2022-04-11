@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import React, { useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, View } from "react-native";
 import ScreenLayout from "../components/ScreenLayout";
 import UserRow from "../components/UserRow";
 import { USER_FRAGMENT } from "../fragments";
@@ -34,12 +34,21 @@ const Likes = ({ route }: any) => {
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        ItemSeparatorComponent={() => (
+          <View
+            style={{
+              width: "100%",
+              height: 0.7,
+              backgroundColor: "rgba(0,0,0,0.1) ",
+            }}
+          ></View>
+        )}
         refreshing={refreshing}
         onRefresh={onRefresh}
         data={data?.seePhotoLikes}
-        keyExtractor={(user: any) => user.userName}
+        keyExtractor={(user: any) => user.id}
         renderItem={renderUser}
-        style={{ width: "100%" }}
+        style={{ width: "100%", marginTop: 10 }}
       />
     </ScreenLayout>
   );
