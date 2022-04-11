@@ -1,11 +1,16 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { lightTheme } from "../styles";
+import { lightTheme, mainTheme } from "../styles";
 import StackNavFacotry from "./SharedStackNav";
+import useMe from "../hooks/useMe";
+import { Image } from "react-native";
 
 const Tabs = createBottomTabNavigator();
 
 const LoggedInNav = () => {
+  const { data } = useMe();
+  console.log(data);
+
   return (
     <Tabs.Navigator
       screenOptions={{
@@ -70,9 +75,23 @@ const LoggedInNav = () => {
         name="내프로필"
         options={{
           title: "🫥",
-          tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons name="ios-person-outline" size={size} color={color} />
-          ),
+          tabBarIcon: ({ focused, color, size }) =>
+            data?.me?.avatar ? (
+              <Image
+                source={{ uri: data?.me?.avatar }}
+                style={{
+                  height: 30,
+                  width: 30,
+                  borderRadius: 20,
+                  ...(focused && {
+                    borderColor: `${mainTheme.mainColor}`,
+                    borderWidth: 1.5,
+                  }),
+                }}
+              />
+            ) : (
+              <Ionicons name="ios-person-outline" size={size} color={color} />
+            ),
         }}
       >
         {() => <StackNavFacotry screenName="내프로필" />}
