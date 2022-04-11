@@ -1,10 +1,20 @@
 import { gql, useLazyQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import styled from "styled-components/native";
 import { TextInput } from "../components/auth/AuthShared";
-import DismissKeyboard from "../components/dismissKeyboard";
+import DismissKeyboard from "../components/DismissKeyboard";
 import { mainTheme } from "../styles";
 
 const SEARCH_PHOTO = gql`
@@ -29,6 +39,7 @@ const MessageText = styled.Text`
 `;
 
 const Search = ({ navigation }: any) => {
+  const { width, height } = useWindowDimensions();
   const { register, setValue, handleSubmit } = useForm();
   const [startQueryFn, { loading, data, called }] = useLazyQuery(SEARCH_PHOTO);
   const onValid = (data: any) => {
@@ -41,13 +52,12 @@ const Search = ({ navigation }: any) => {
 
   const SerarchBox = () => (
     <TextInput
-      style={{ right: 65 }}
+      style={{ right: 6, width: width / 1.01 }}
       placeholder="검색어"
       autoCapitalize="none"
       returnKeyLabel="search"
       returnKeyType="search"
       autoCorrect={false}
-      autoFocus={true}
       onChangeText={(text: string) => setValue("keyword", text)}
       onSubmitEditing={handleSubmit(onValid)}
     />
@@ -60,7 +70,14 @@ const Search = ({ navigation }: any) => {
     register("keyword", { required: true, minLength: 3 });
   }, []);
 
-  console.log(data);
+  const renderItem = ({ item: photo }: any) => (
+    <TouchableOpacity>
+      <Image
+        source={{ uri: photo.file }}
+        style={{ width: width / 3, height: width / 3 }}
+      />
+    </TouchableOpacity>
+  );
 
   return (
     <DismissKeyboard>
@@ -76,10 +93,19 @@ const Search = ({ navigation }: any) => {
             <MessageText>검색중...</MessageText>
           </MessageContainer>
         ) : null}
-        {data?.searchPhotos !== undefined && data?.searchPhotos.length === 0 ? (
-          <MessageContainer>
-            <MessageText>검색 결과가 없습니다.</MessageText>
-          </MessageContainer>
+        {data?.searchPhotos !== undefined ? (
+          data?.searchPhotos?.length === 0 ? (
+            <MessageContainer>
+              <MessageText>검색 결과가 없습니다.</MessageText>
+            </MessageContainer>
+          ) : (
+            <FlatList
+              numColumns={3}
+              data={data?.searchPhotos}
+              keyExtractor={(photo: any) => photo.id}
+              renderItem={renderItem}
+            />
+          )
         ) : null}
       </View>
     </DismissKeyboard>

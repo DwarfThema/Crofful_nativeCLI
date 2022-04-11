@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import styled from "styled-components/native";
 import BgLogo from "../BgLogo";
-import DismissKeyboard from "../dismissKeyboard";
+import DismissKeyboard from "../DismissKeyboard";
 
 const Container = styled.View`
   flex: 1;
