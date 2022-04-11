@@ -66,7 +66,6 @@ const Login = ({ route }: any) => {
         ref={loginIdRef}
         placeholder="아이디"
         placeholderTextColor="gray"
-        keyboardType="name-phone-pad"
         returnKeyType="next"
         autoCorrect={false}
         autoCapitalize="none"
@@ -79,7 +78,6 @@ const Login = ({ route }: any) => {
         secureTextEntry
         placeholder="비밀번호"
         placeholderTextColor="gray"
-        keyboardType="name-phone-pad"
         returnKeyType="next"
         autoCorrect={false}
         onSubmitEditing={handleSubmit(onValid)}

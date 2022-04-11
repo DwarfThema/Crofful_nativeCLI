@@ -53,9 +53,7 @@ const Action = styled.TouchableOpacity`
 const Cpation = styled.View`
   flex-direction: row;
 `;
-const CaptionText = styled.Text`
-  margin-left: 5px;
-`;
+const CaptionText = styled.Text``;
 const Likes = styled.Text`
   margin: 5px 0px;
   font-weight: 600;

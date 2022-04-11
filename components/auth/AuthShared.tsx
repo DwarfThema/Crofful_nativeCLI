@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components/native";
 
 interface ITextInput {
@@ -10,5 +11,5 @@ export const TextInput = styled.TextInput<ITextInput>`
   margin-bottom: ${(p) => (p.lastOne ? "15px" : "5px")};
   border-radius: 4px;
   width: 80%;
-  color: white;
+  color: black;
 `;

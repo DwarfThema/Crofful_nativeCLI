@@ -9,7 +9,6 @@ const Tabs = createBottomTabNavigator();
 
 const LoggedInNav = () => {
   const { data } = useMe();
-  console.log(data);
 
   return (
     <Tabs.Navigator
