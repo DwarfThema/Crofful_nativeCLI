@@ -6,7 +6,7 @@ import Feed from "../screens/Feed";
 import Likes from "../screens/Likes";
 import MeProfile from "../screens/MeProfile";
 import Notification from "../screens/Notification";
-import Photo from "../screens/Photo";
+import PhotoScreen from "../screens/PhotoScreen";
 import Search from "../screens/Search";
 import SomeProfile from "../screens/SomeProfile";
 
@@ -60,7 +60,7 @@ const SharedStackNav = ({ screenName }: any) => {
         options={{ title: "🫥" }}
         component={SomeProfile}
       />
-      <Stack.Screen name="사진" component={Photo} />
+      <Stack.Screen name="사진" component={PhotoScreen} />
       <Stack.Screen name="좋아요" component={Likes} />
       <Stack.Screen name="댓글" component={Comments} />
     </Stack.Navigator>

@@ -71,6 +71,7 @@ interface IPhoto {
   likes: number;
   caption?: string;
   comments?: any[];
+  fullView?: boolean;
 }
 
 interface Inavigation {
@@ -93,6 +94,7 @@ const Photo = ({
   file,
   isLiked,
   likes,
+  fullView,
   comments,
 }: IPhoto) => {
   const updateToggleLike = (cache: any, result: any) => {

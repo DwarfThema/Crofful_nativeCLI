@@ -39,7 +39,8 @@ const MessageText = styled.Text`
 `;
 
 const Search = ({ navigation }: any) => {
-  const { width, height } = useWindowDimensions();
+  const numColums = 4;
+  const { width } = useWindowDimensions();
   const { register, setValue, handleSubmit } = useForm();
   const [startQueryFn, { loading, data, called }] = useLazyQuery(SEARCH_PHOTO);
   const onValid = (data: any) => {
@@ -70,14 +71,18 @@ const Search = ({ navigation }: any) => {
     register("keyword", { required: true, minLength: 3 });
   }, []);
 
-  const renderItem = ({ item: photo }: any) => (
-    <TouchableOpacity>
-      <Image
-        source={{ uri: photo.file }}
-        style={{ width: width / 3, height: width / 3 }}
-      />
-    </TouchableOpacity>
-  );
+  const renderItem = ({ item: photo }: any) => {
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate("사진", { photoId: photo.id })}
+      >
+        <Image
+          source={{ uri: photo.file }}
+          style={{ width: width / 3, height: width / 3 }}
+        />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <DismissKeyboard>
