@@ -69,6 +69,7 @@ const LoggedInNav = () => {
       <Tabs.Screen
         name="내프로필"
         options={{
+          title: "🫥",
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons name="ios-person-outline" size={size} color={color} />
           ),

@@ -10,7 +10,7 @@ const MeProfile = ({ navigation }: any) => {
     navigation.setOptions({
       title: data?.me?.userName,
     });
-  }, []);
+  }, [data]);
 
   return (
     <View

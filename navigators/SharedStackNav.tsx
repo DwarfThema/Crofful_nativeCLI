@@ -49,11 +49,15 @@ const SharedStackNav = ({ screenName }: any) => {
         <Stack.Screen name="탭알림" component={Notification} />
       ) : null}
       {screenName === "내프로필" ? (
-        <Stack.Screen name="탭내프로필" component={MeProfile} />
+        <Stack.Screen
+          name="탭내프로필"
+          options={{ title: "🫥" }}
+          component={MeProfile}
+        />
       ) : null}
       <Stack.Screen
-        options={{ title: "🫥" }}
         name="타인프로필"
+        options={{ title: "🫥" }}
         component={SomeProfile}
       />
       <Stack.Screen name="사진" component={Photo} />

@@ -6,7 +6,7 @@ const SomeProfile = ({ navigation, route }: any) => {
     navigation.setOptions({
       title: route?.params?.userName,
     });
-  }, []);
+  }, [route]);
   return (
     <View
       style={{

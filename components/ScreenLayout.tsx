@@ -1,5 +1,6 @@
 import React from "react";
 import { ActivityIndicator, View } from "react-native";
+import { mainTheme } from "../styles";
 
 const ScreenLayout = ({ loading, children }: any) => {
   return (
@@ -11,7 +12,11 @@ const ScreenLayout = ({ loading, children }: any) => {
         justifyContent: "center",
       }}
     >
-      {loading ? <ActivityIndicator color="blue" size="large" /> : children}
+      {loading ? (
+        <ActivityIndicator color={mainTheme.mainColor} size="large" />
+      ) : (
+        children
+      )}
     </View>
   );
 };
