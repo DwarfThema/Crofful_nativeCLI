@@ -1,30 +1,41 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import * as MediaLibrary from "expo-media-library";
-import { FlatList } from "react-native";
+import {
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const Container = styled.View`
   flex: 1;
 `;
 
 const Top = styled.View`
-  flex: 1;
-  background-color: blue;
+  align-items: center;
+  justify-content: center;
 `;
 
-const Bottom = styled.View`
-  flex: 1;
-  background-color: red;
+const Bottom = styled.View``;
+
+const ImageContainer = styled.TouchableOpacity``;
+const IconContainer = styled.View`
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
 `;
 
 const SelectPhoto = () => {
-  const [ok, setOk] = useState(false);
-  const [photos, setPhotos] = useState("");
+  const { width } = useWindowDimensions();
+  const [photos, setPhotos]: any = useState("");
+  const [chosenPhoto, setChosenPhoto] = useState("");
   const getPhotos = async () => {
-    if (ok) {
-      const { assets }: any = await MediaLibrary.getAssetsAsync();
-      setPhotos(assets);
-    }
+    const { assets }: any = await MediaLibrary.getAssetsAsync();
+    setPhotos(assets);
+    setChosenPhoto(assets[0]?.uri);
   };
 
   const getPermissions = async () => {
@@ -34,22 +45,50 @@ const SelectPhoto = () => {
       const { accessPrivileges } = await MediaLibrary.requestPermissionsAsync();
       MediaLibrary.requestPermissionsAsync();
       if (accessPrivileges !== "none") {
-        setOk(true);
+        getPhotos();
       }
     } else if (accessPrivileges !== "none") {
-      setOk(true);
+      getPhotos();
     }
   };
   useEffect(() => {
     getPermissions();
     getPhotos();
   }, []);
-
-  console.log(photos);
+  const choosePhoto = (uri: any) => {
+    setChosenPhoto(uri);
+  };
+  const renderItem = ({ item: photo }: any) => (
+    <ImageContainer onPress={() => choosePhoto(photo.uri)}>
+      <Image
+        source={{ uri: photo.uri }}
+        style={{ width: width / 4, height: width / 4 }}
+      />
+      <IconContainer>
+        <Ionicons name="checkmark-circle" size={18} color="white" />
+      </IconContainer>
+    </ImageContainer>
+  );
   return (
     <Container>
-      <Top />
-      <Bottom></Bottom>
+      <Top style={{ width: width, height: width }}>
+        {chosenPhoto !== "" ? (
+          <Image
+            source={{ uri: chosenPhoto }}
+            style={{ width: width, height: "100%" }}
+          />
+        ) : (
+          <Text>사진을 선택해주세요.</Text>
+        )}
+      </Top>
+      <Bottom>
+        <FlatList
+          data={photos}
+          keyExtractor={(itme) => itme.id}
+          renderItem={renderItem}
+          numColumns={4}
+        />
+      </Bottom>
     </Container>
   );
 };
