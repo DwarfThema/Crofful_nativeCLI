@@ -7,8 +7,10 @@ import {
   Text,
   TouchableOpacity,
   useWindowDimensions,
+  View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { mainTheme } from "../styles";
 
 const Container = styled.View`
   flex: 1;
@@ -21,14 +23,20 @@ const Top = styled.View`
 
 const Bottom = styled.View``;
 
-const ImageContainer = styled.TouchableOpacity``;
+const ImageContainer = styled.TouchableWithoutFeedback``;
 const IconContainer = styled.View`
   position: absolute;
   bottom: 2px;
   right: 2px;
 `;
+const HeaderRightText = styled.Text`
+  font-size: 17px;
+  color: ${mainTheme.mainColor};
+  font-weight: 800;
+  margin-right: -5px;
+`;
 
-const SelectPhoto = () => {
+const SelectPhoto = ({ navigation }: any) => {
   const { width } = useWindowDimensions();
   const [photos, setPhotos]: any = useState("");
   const [chosenPhoto, setChosenPhoto] = useState("");
@@ -51,24 +59,47 @@ const SelectPhoto = () => {
       getPhotos();
     }
   };
+
+  const HeaderRight = () => (
+    <TouchableOpacity>
+      <HeaderRightText>선택</HeaderRightText>
+    </TouchableOpacity>
+  );
+
   useEffect(() => {
     getPermissions();
     getPhotos();
   }, []);
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: HeaderRight,
+    });
+  }, []);
+
   const choosePhoto = (uri: any) => {
     setChosenPhoto(uri);
   };
+
   const renderItem = ({ item: photo }: any) => (
     <ImageContainer onPress={() => choosePhoto(photo.uri)}>
-      <Image
-        source={{ uri: photo.uri }}
-        style={{ width: width / 4, height: width / 4 }}
-      />
-      <IconContainer>
-        <Ionicons name="checkmark-circle" size={18} color="white" />
-      </IconContainer>
+      <View>
+        <Image
+          source={{ uri: photo.uri }}
+          style={{ width: width / 4, height: width / 4 }}
+        />
+        <IconContainer>
+          <Ionicons
+            name="checkmark-circle"
+            size={18}
+            color={
+              photo.uri === chosenPhoto ? `${mainTheme.mainColor}` : "white"
+            }
+          />
+        </IconContainer>
+      </View>
     </ImageContainer>
   );
+
   return (
     <Container>
       <Top style={{ width: width, height: width }}>

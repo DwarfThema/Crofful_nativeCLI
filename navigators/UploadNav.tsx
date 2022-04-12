@@ -18,7 +18,7 @@ const UploadNav = () => {
       screenOptions={{
         tabBarStyle: {
           backgroundColor: "white",
-          height: 80,
+          height: 75,
         },
         tabBarActiveTintColor: `${mainTheme.mainColor}`,
         tabBarLabelStyle: { fontWeight: "900" },
@@ -28,7 +28,7 @@ const UploadNav = () => {
         },
       }}
     >
-      <Tab.Screen name="탭선택" options={{ tabBarLabel: "선택" }}>
+      <Tab.Screen name="탭선택" options={{ tabBarLabel: "앨범" }}>
         {() => (
           <Stack.Navigator
             screenOptions={{
@@ -43,11 +43,11 @@ const UploadNav = () => {
               ),
             }}
           >
-            <Stack.Screen name="선택" component={SelectPhoto} />
+            <Stack.Screen name="앨범" component={SelectPhoto} />
           </Stack.Navigator>
         )}
       </Tab.Screen>
-      <Tab.Screen name="탭가져오기" options={{ tabBarLabel: "사진" }}>
+      <Tab.Screen name="탭가져오기" options={{ tabBarLabel: "카메라" }}>
         {() => (
           <Stack.Navigator
             screenOptions={{
@@ -62,7 +62,7 @@ const UploadNav = () => {
               ),
             }}
           >
-            <Stack.Screen name="사진" component={TakePhoto} />
+            <Stack.Screen name="카메라" component={TakePhoto} />
           </Stack.Navigator>
         )}
       </Tab.Screen>
