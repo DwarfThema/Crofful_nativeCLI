@@ -10,7 +10,7 @@ import Notification from "../screens/Notification";
 import PhotoScreen from "../screens/PhotoScreen";
 import Search from "../screens/Search";
 import SomeProfile from "../screens/SomeProfile";
-import Upload from "../screens/Upload";
+import Upload from "../screens/SelectPhoto";
 
 const Stack = createNativeStackNavigator();
 
