@@ -5,9 +5,6 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -39,10 +36,12 @@ const MessageText = styled.Text`
 `;
 
 const Search = ({ navigation }: any) => {
-  const numColums = 4;
   const { width } = useWindowDimensions();
+
   const { register, setValue, handleSubmit } = useForm();
+
   const [startQueryFn, { loading, data, called }] = useLazyQuery(SEARCH_PHOTO);
+
   const onValid = (data: any) => {
     startQueryFn({
       variables: {

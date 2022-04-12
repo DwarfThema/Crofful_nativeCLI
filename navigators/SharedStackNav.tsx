@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import styled from "styled-components/native";
+import Camera from "../screens/Camera";
 import Comments from "../screens/Comments";
 import Feed from "../screens/Feed";
 import Likes from "../screens/Likes";
@@ -9,6 +10,7 @@ import Notification from "../screens/Notification";
 import PhotoScreen from "../screens/PhotoScreen";
 import Search from "../screens/Search";
 import SomeProfile from "../screens/SomeProfile";
+import Upload from "../screens/Upload";
 
 const Stack = createNativeStackNavigator();
 

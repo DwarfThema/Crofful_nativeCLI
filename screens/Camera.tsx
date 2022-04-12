@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { logUserOut } from "../apollo";
 
 const Camera = () => {
   return (
@@ -11,7 +12,9 @@ const Camera = () => {
         justifyContent: "center",
       }}
     >
-      <Text>Camera</Text>
+      <TouchableOpacity onPress={() => logUserOut()}>
+        <Text>Camera</Text>
+      </TouchableOpacity>
     </View>
   );
 };
