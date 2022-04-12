@@ -1,6 +1,7 @@
-import React from "react";
-import { Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
+import * as MediaLibrary from "expo-media-library";
+import { FlatList } from "react-native";
 
 const Container = styled.View`
   flex: 1;
@@ -17,10 +18,38 @@ const Bottom = styled.View`
 `;
 
 const SelectPhoto = () => {
+  const [ok, setOk] = useState(false);
+  const [photos, setPhotos] = useState("");
+  const getPhotos = async () => {
+    if (ok) {
+      const { assets }: any = await MediaLibrary.getAssetsAsync();
+      setPhotos(assets);
+    }
+  };
+
+  const getPermissions = async () => {
+    const { accessPrivileges, canAskAgain } =
+      await MediaLibrary.getPermissionsAsync();
+    if (accessPrivileges === "none" && canAskAgain) {
+      const { accessPrivileges } = await MediaLibrary.requestPermissionsAsync();
+      MediaLibrary.requestPermissionsAsync();
+      if (accessPrivileges !== "none") {
+        setOk(true);
+      }
+    } else if (accessPrivileges !== "none") {
+      setOk(true);
+    }
+  };
+  useEffect(() => {
+    getPermissions();
+    getPhotos();
+  }, []);
+
+  console.log(photos);
   return (
     <Container>
       <Top />
-      <Bottom />
+      <Bottom></Bottom>
     </Container>
   );
 };
