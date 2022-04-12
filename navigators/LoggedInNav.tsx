@@ -1,7 +1,7 @@
 import useMe from "../hooks/useMe";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabsNav from "./TabsNav";
-import Upload from "../screens/Upload";
+import UploadNav from "./UploadNav";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +16,7 @@ const LoggedInNav = () => {
       }}
     >
       <Stack.Screen name="탭" component={TabsNav} />
-      <Stack.Screen name="업로드" component={Upload} />
+      <Stack.Screen name="업로드" component={UploadNav} />
     </Stack.Navigator>
   );
 };
