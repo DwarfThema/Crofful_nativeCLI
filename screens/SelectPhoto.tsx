@@ -60,21 +60,22 @@ const SelectPhoto = ({ navigation }: any) => {
     }
   };
 
-  const HeaderRight = () => (
-    <TouchableOpacity>
-      <HeaderRightText>선택</HeaderRightText>
-    </TouchableOpacity>
-  );
-
   useEffect(() => {
     getPermissions();
     getPhotos();
   }, []);
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: HeaderRight,
     });
   }, []);
+
+  const HeaderRight = () => (
+    <TouchableOpacity>
+      <HeaderRightText>선택</HeaderRightText>
+    </TouchableOpacity>
+  );
 
   const choosePhoto = (uri: any) => {
     setChosenPhoto(uri);
