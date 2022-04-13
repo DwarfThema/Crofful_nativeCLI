@@ -32,6 +32,7 @@ const UploadNav = () => {
         {() => (
           <Stack.Navigator
             screenOptions={{
+              title: "앨범",
               headerLeft: () => (
                 <Ionicons
                   onPress={() => navigation.navigate("탭")}
@@ -49,19 +50,7 @@ const UploadNav = () => {
       </Tab.Screen>
       <Tab.Screen name="탭가져오기" options={{ tabBarLabel: "카메라" }}>
         {() => (
-          <Stack.Navigator
-            screenOptions={{
-              headerLeft: () => (
-                <Ionicons
-                  onPress={() => navigation.navigate("탭")}
-                  color={mainTheme.mainColor}
-                  name="close"
-                  size={28}
-                  style={{ left: -10 }}
-                />
-              ),
-            }}
-          >
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="카메라" component={TakePhoto} />
           </Stack.Navigator>
         )}
