@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Image, Text, TouchableOpacity } from "react-native";
+import { Alert, Image, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 import styled from "styled-components/native";
@@ -56,7 +56,7 @@ const ActionsSave = styled.TouchableOpacity`
 
 const SavePhotoText = styled.Text`
   color: white;
-  font-size: 16;
+  font-size: 16px;
   font-weight: 800;
 `;
 
@@ -114,12 +114,22 @@ const TakePhoto = () => {
   const onDismiss = () => {
     setTakenPhoto("");
   };
-  const onSave = async () => {
-    const asset = await MediaLibrary.createAssetAsync(takenPhoto);
+
+  const goToUpload = async (save: any) => {
+    if (save) {
+      await MediaLibrary.saveToLibraryAsync(takenPhoto);
+    }
+    // go to upload
   };
 
-  const onUpload = async () => {
-    const asset = await MediaLibrary.createAssetAsync(takenPhoto);
+  const onUpload = () => {
+    Alert.alert("업로드 전에", "사진을 저장하겠습니까?", [
+      {
+        text: "응",
+        onPress: () => goToUpload(true),
+      },
+      { text: "아니", onPress: () => goToUpload(false) },
+    ]);
   };
 
   return (
@@ -194,10 +204,7 @@ const TakePhoto = () => {
         <Actions>
           <ActionsContainer>
             <ActionsSave onPress={onDismiss}>
-              <SavePhotoText>삭제</SavePhotoText>
-            </ActionsSave>
-            <ActionsSave onPress={onSave}>
-              <SavePhotoText>저장</SavePhotoText>
+              <SavePhotoText>다시찍기</SavePhotoText>
             </ActionsSave>
             <ActionsSave onPress={onUpload}>
               <SavePhotoText>업로드</SavePhotoText>
