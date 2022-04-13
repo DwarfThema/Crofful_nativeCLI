@@ -4,6 +4,18 @@ import styled from "styled-components/native";
 import DismissKeyboard from "../components/DismissKeyboard";
 import { useForm } from "react-hook-form";
 import { mainTheme } from "../styles";
+import { gql, useMutation } from "@apollo/client";
+import { FEED_PHOTO } from "../fragments";
+import { ReactNativeFile } from "apollo-upload-client";
+
+const UPLOAD_PHOTO_MUTATION = gql`
+  mutation uploadPhoto($file: Upload!, $caption: String) {
+    uploadPhoto(file: $file, caption: $caption) {
+      ...FeedPhoto
+    }
+  }
+  ${FEED_PHOTO}
+`;
 
 const Container = styled.View`
   flex: 1;
@@ -17,6 +29,7 @@ const Photo = styled.Image`
   background-color: rgba(0, 0, 0, 0.08);
 `;
 const CaptionContainer = styled.View``;
+
 const Caption = styled.TextInput`
   padding: 10px 20px;
   width: 300px;
@@ -33,13 +46,14 @@ const HeaderRightText = styled.Text`
 `;
 
 const UploadForm = ({ route, navigation }: any) => {
+  const [uploadPhotoMutation, { loading }] = useMutation(UPLOAD_PHOTO_MUTATION);
   const { register, handleSubmit, setValue } = useForm();
   useEffect(() => {
     register("caption");
   }, [register]);
 
   const HeaderRight = () => (
-    <TouchableOpacity onPress={() => navigation.navigate("업로드폼")}>
+    <TouchableOpacity onPress={handleSubmit(onValid)}>
       <HeaderRightText>업로드</HeaderRightText>
     </TouchableOpacity>
   );
@@ -50,12 +64,25 @@ const UploadForm = ({ route, navigation }: any) => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: HeaderRightLoading,
-      headerLeft: () => null,
+      headerRight: loading ? HeaderRightLoading : HeaderRight,
+      ...(loading && { headerLeft: () => null }),
     });
-  }, [HeaderRightLoading]);
+  }, [loading]);
 
-  const onValid = ({ caption }: any) => {};
+  const onValid = ({ caption }: any) => {
+    const file = new ReactNativeFile({
+      uri: route.params.file,
+      name: "a.jpg",
+      type: "image/jpeg",
+    });
+
+    uploadPhotoMutation({
+      variables: {
+        caption: caption,
+        file: file,
+      },
+    });
+  };
 
   return (
     <DismissKeyboard>
