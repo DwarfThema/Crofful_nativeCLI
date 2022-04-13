@@ -41,6 +41,8 @@ const SelectPhoto = ({ navigation }: any) => {
   const { width } = useWindowDimensions();
   const [photos, setPhotos]: any = useState("");
   const [chosenPhoto, setChosenPhoto] = useState("");
+  const [photoInfoUri, setPhotoInfoUri] = useState("");
+
   const getPhotos = async () => {
     const { assets }: any = await MediaLibrary.getAssetsAsync();
     setPhotos(assets);
@@ -70,14 +72,18 @@ const SelectPhoto = ({ navigation }: any) => {
     navigation.setOptions({
       headerRight: HeaderRight,
     });
-  }, [chosenPhoto]);
+  }, [chosenPhoto, photoInfoUri]);
 
-  const choosePhoto = (uri: any) => {
-    setChosenPhoto(uri);
+  const choosePhoto = async (id: any) => {
+    const info = await MediaLibrary.getAssetInfoAsync(id);
+    console.log(info);
+
+    setChosenPhoto(info.uri);
+    setPhotoInfoUri(info.localUri || "");
   };
 
   const renderItem = ({ item: photo }: any) => (
-    <ImageContainer onPress={() => choosePhoto(photo.uri)}>
+    <ImageContainer onPress={() => choosePhoto(photo.id)}>
       <View>
         <Image
           source={{ uri: photo.uri }}
@@ -101,13 +107,13 @@ const SelectPhoto = ({ navigation }: any) => {
       onPress={() =>
         navigation.navigate("업로드폼", {
           file: chosenPhoto,
+          photoInfoUri,
         })
       }
     >
       <HeaderRightText>선택</HeaderRightText>
     </TouchableOpacity>
   );
-
   return (
     <Container>
       <StatusBar style="light" />

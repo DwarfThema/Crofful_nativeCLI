@@ -51,6 +51,7 @@ const UploadForm = ({ route, navigation }: any) => {
   useEffect(() => {
     register("caption");
   }, [register]);
+  console.log(route.params.photoInfoUri);
 
   const HeaderRight = () => (
     <TouchableOpacity onPress={handleSubmit(onValid)}>
@@ -71,7 +72,7 @@ const UploadForm = ({ route, navigation }: any) => {
 
   const onValid = ({ caption }: any) => {
     const file = new ReactNativeFile({
-      uri: route.params.file,
+      uri: route.params.photoInfoUri,
       name: "a.jpg",
       type: "image/jpeg",
     });
