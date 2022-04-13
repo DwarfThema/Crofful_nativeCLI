@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 import styled from "styled-components/native";
-import { buttonTheme, mainTheme } from "../styles";
-import { CameraType } from "expo-camera/build/Camera.types";
+import { mainTheme } from "../styles";
 import Slider from "@react-native-community/slider";
+import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 
 const Container = styled.View`
@@ -43,20 +43,20 @@ const ActionsContainer = styled.View`
 `;
 
 const TakePhoto = () => {
+  const camera: any = useRef();
+  const [cameraReady, setCameraReady] = useState(false);
+
   const navigation: any = useNavigation();
+
   const [ok, setOk] = useState(false);
-
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
-
   const [zoom, setZoom] = useState(0);
-
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
 
   const getPermissions = async () => {
     const { granted } = await Camera.requestCameraPermissionsAsync();
     setOk(granted);
   };
-
   useEffect(() => {
     getPermissions();
   }, []);
@@ -68,11 +68,9 @@ const TakePhoto = () => {
       setCameraType(Camera.Constants.Type.back);
     }
   };
-
   const onZoomValueChange = (e: any) => {
     setZoom(e);
   };
-
   const onFlashChanged = () => {
     if (flashMode === Camera.Constants.FlashMode.off) {
       setFlashMode(Camera.Constants.FlashMode.on);
@@ -81,13 +79,28 @@ const TakePhoto = () => {
     }
   };
 
+  const onCameraReady = () => setCameraReady(true);
+
+  const takePhoto = async () => {
+    if (camera.current && cameraReady) {
+      const { height, uri, width } = await camera.current.takePictureAsync({
+        quality: 1,
+        exif: true,
+      });
+      console.log(height, uri, width);
+    }
+  };
+
   return (
     <Container>
+      <StatusBar hidden={true} />
       <Camera
         type={cameraType}
         style={{ flex: 1 }}
         zoom={zoom}
         flashMode={flashMode}
+        ref={camera}
+        onCameraReady={onCameraReady}
       >
         <TouchableOpacity onPress={() => navigation.navigate("탭")}>
           <Ionicons
@@ -127,7 +140,7 @@ const TakePhoto = () => {
               }}
             />
           </ActionsBtn>
-          <TakePhotoBtn>
+          <TakePhotoBtn onPress={takePhoto}>
             <Ionicons name="camera" style={{ fontSize: 40 }} />
           </TakePhotoBtn>
           <ActionsBtn onPress={onCameraSwitch}>
