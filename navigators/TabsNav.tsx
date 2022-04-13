@@ -4,7 +4,6 @@ import { lightTheme, mainTheme } from "../styles";
 import StackNavFacotry from "./SharedStackNav";
 import useMe from "../hooks/useMe";
 import { Image, View } from "react-native";
-import Camera from "../screens/Camera";
 
 const Tabs = createBottomTabNavigator();
 

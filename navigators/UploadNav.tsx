@@ -30,21 +30,22 @@ const UploadNav = () => {
     >
       <Tab.Screen name="탭선택" options={{ tabBarLabel: "앨범" }}>
         {() => (
-          <Stack.Navigator
-            screenOptions={{
-              title: "앨범",
-              headerLeft: () => (
-                <Ionicons
-                  onPress={() => navigation.navigate("탭")}
-                  color={mainTheme.mainColor}
-                  name="close"
-                  size={28}
-                  style={{ left: -10 }}
-                />
-              ),
-            }}
-          >
-            <Stack.Screen name="앨범" component={SelectPhoto} />
+          <Stack.Navigator>
+            <Stack.Screen
+              name="앨범"
+              options={{
+                headerLeft: () => (
+                  <Ionicons
+                    onPress={() => navigation.navigate("탭")}
+                    color={mainTheme.mainColor}
+                    name="close"
+                    size={28}
+                    style={{ left: -10 }}
+                  />
+                ),
+              }}
+              component={SelectPhoto}
+            />
           </Stack.Navigator>
         )}
       </Tab.Screen>

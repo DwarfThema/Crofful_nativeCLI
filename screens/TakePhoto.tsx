@@ -6,7 +6,7 @@ import styled from "styled-components/native";
 import { mainTheme } from "../styles";
 import Slider from "@react-native-community/slider";
 import { StatusBar } from "expo-status-bar";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import * as MediaLibrary from "expo-media-library";
 
 const Container = styled.View`
@@ -60,13 +60,11 @@ const SavePhotoText = styled.Text`
   font-weight: 800;
 `;
 
-const TakePhoto = () => {
+const TakePhoto = ({ navigation }: any) => {
   const [takenPhoto, setTakenPhoto] = useState("");
 
   const camera: any = useRef();
   const [cameraReady, setCameraReady] = useState(false);
-
-  const navigation: any = useNavigation();
 
   const [ok, setOk] = useState(false);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
@@ -77,6 +75,7 @@ const TakePhoto = () => {
     const { granted } = await Camera.requestCameraPermissionsAsync();
     setOk(granted);
   };
+
   useEffect(() => {
     getPermissions();
   }, []);
@@ -119,7 +118,9 @@ const TakePhoto = () => {
     if (save) {
       await MediaLibrary.saveToLibraryAsync(takenPhoto);
     }
-    // go to upload
+    navigation.navigate("업로드폼", {
+      file: takenPhoto,
+    });
   };
 
   const onUpload = () => {
@@ -132,9 +133,11 @@ const TakePhoto = () => {
     ]);
   };
 
+  const isFocused = useIsFocused();
+
   return (
     <Container>
-      <StatusBar hidden={true} />
+      {isFocused ? <StatusBar hidden={true} /> : null}
       {takenPhoto === "" ? (
         <Camera
           type={cameraType}

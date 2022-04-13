@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { mainTheme } from "../styles";
+import { StatusBar } from "expo-status-bar";
 
 const Container = styled.View`
   flex: 1;
@@ -69,13 +70,7 @@ const SelectPhoto = ({ navigation }: any) => {
     navigation.setOptions({
       headerRight: HeaderRight,
     });
-  }, []);
-
-  const HeaderRight = () => (
-    <TouchableOpacity>
-      <HeaderRightText>선택</HeaderRightText>
-    </TouchableOpacity>
-  );
+  }, [chosenPhoto]);
 
   const choosePhoto = (uri: any) => {
     setChosenPhoto(uri);
@@ -101,8 +96,21 @@ const SelectPhoto = ({ navigation }: any) => {
     </ImageContainer>
   );
 
+  const HeaderRight = () => (
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("업로드폼", {
+          file: chosenPhoto,
+        })
+      }
+    >
+      <HeaderRightText>선택</HeaderRightText>
+    </TouchableOpacity>
+  );
+
   return (
     <Container>
+      <StatusBar style="light" />
       <Top style={{ width: width, height: width }}>
         {chosenPhoto !== "" ? (
           <Image
