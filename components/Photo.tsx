@@ -17,8 +17,8 @@ const HeaderTextContainer = styled.View``;
 const UserAvatar = styled.Image`
   width: 40px;
   height: 40px;
-  border-radius: 25px;
   margin-right: 10px;
+  border-radius: 25px;
   border-color: ${(p) => p.theme.accent};
   border-width: 2px;
 `;
