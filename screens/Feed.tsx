@@ -49,7 +49,7 @@ const Feed = ({ navigation }: any) => {
   };
 
   const MessagesButton = () => (
-    <TouchableOpacity onPress={() => navigation.navigate("디엠")}>
+    <TouchableOpacity onPress={() => navigation.navigate("메세지")}>
       <Ionicons
         name="paper-plane"
         color={mainTheme.mainColor}

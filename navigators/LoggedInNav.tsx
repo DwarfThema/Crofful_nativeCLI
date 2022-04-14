@@ -45,8 +45,19 @@ const LoggedInNav = () => {
         }}
       />
       <Stack.Screen
-        name="디엠"
-        options={{ headerShown: false }}
+        name="메세지"
+        options={{
+          headerTintColor: `${mainTheme.mainColor}`,
+          headerLeft: () => (
+            <Ionicons
+              onPress={() => navigation.goBack()}
+              color={mainTheme.mainColor}
+              name="chevron-back"
+              size={28}
+              style={{ left: -10 }}
+            />
+          ),
+        }}
         component={MessagesNav}
       />
     </Stack.Navigator>
