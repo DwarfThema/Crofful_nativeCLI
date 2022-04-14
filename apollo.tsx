@@ -31,6 +31,10 @@ const httpLink = createHttpLink({
   uri: "http://1c12-211-54-66-89.ngrok.io/graphql",
 });
 
+const uploadHttpLink = createUploadLink({
+  uri: "http://localhost:4000/graphql",
+});
+
 const authLink = setContext((_, { headers }) => {
   return {
     headers: {
@@ -57,10 +61,6 @@ const onErrorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) {
     console.log("서버 에러", networkError);
   }
-});
-
-const uploadHttpLink = createUploadLink({
-  uri: "http://1c12-211-54-66-89.ngrok.io/graphql",
 });
 
 const client = new ApolloClient({

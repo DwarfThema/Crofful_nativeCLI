@@ -59,7 +59,6 @@ const UploadForm = ({ route, navigation }: any) => {
           },
         },
       });
-
       navigation.navigate("탭");
     }
   };

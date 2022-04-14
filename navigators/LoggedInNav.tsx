@@ -6,6 +6,7 @@ import UploadForm from "../screens/UploadForm";
 import { mainTheme } from "../styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import MessagesNav from "./MessagesNav";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,11 @@ const LoggedInNav = () => {
             />
           ),
         }}
+      />
+      <Stack.Screen
+        name="디엠"
+        options={{ headerShown: false }}
+        component={MessagesNav}
       />
     </Stack.Navigator>
   );

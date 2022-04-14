@@ -1,9 +1,11 @@
 import { gql, useQuery } from "@apollo/client";
-import React, { useState } from "react";
-import { FlatList } from "react-native";
+import React, { useEffect, useState } from "react";
+import { FlatList, TouchableOpacity } from "react-native";
 import Photo from "../components/Photo";
 import ScreenLayout from "../components/ScreenLayout";
 import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from "../fragments";
+import { Ionicons } from "@expo/vector-icons";
+import { mainTheme } from "../styles";
 
 const FEED_QUERY = gql`
   query seeFeed($offset: Int!) {
@@ -45,6 +47,22 @@ const Feed = ({ navigation }: any) => {
     await refetch();
     setRefreshing(false);
   };
+
+  const MessagesButton = () => (
+    <TouchableOpacity onPress={() => navigation.navigate("디엠")}>
+      <Ionicons
+        name="paper-plane"
+        color={mainTheme.mainColor}
+        size={23}
+      ></Ionicons>
+    </TouchableOpacity>
+  );
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: MessagesButton,
+    });
+  }, []);
 
   return (
     <ScreenLayout loading={loading}>
