@@ -6,6 +6,7 @@ import TakePhoto from "../screens/TakePhoto";
 import { mainTheme } from "../styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import BackIcon from "../components/BackIcon";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -34,15 +35,7 @@ const UploadNav = () => {
             <Stack.Screen
               name="앨범"
               options={{
-                headerLeft: () => (
-                  <Ionicons
-                    onPress={() => navigation.navigate("탭")}
-                    color={mainTheme.mainColor}
-                    name="close"
-                    size={28}
-                    style={{ left: -10 }}
-                  />
-                ),
+                headerLeft: () => <BackIcon name="close" />,
               }}
               component={SelectPhoto}
             />

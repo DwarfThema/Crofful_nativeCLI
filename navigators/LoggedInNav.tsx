@@ -47,16 +47,7 @@ const LoggedInNav = () => {
       <Stack.Screen
         name="메세지"
         options={{
-          headerTintColor: `${mainTheme.mainColor}`,
-          headerLeft: () => (
-            <Ionicons
-              onPress={() => navigation.goBack()}
-              color={mainTheme.mainColor}
-              name="chevron-back"
-              size={28}
-              style={{ left: -10 }}
-            />
-          ),
+          headerShown: false,
         }}
         component={MessagesNav}
       />
