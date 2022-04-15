@@ -1,10 +1,11 @@
 import { FlatList, KeyboardAvoidingView, View } from "react-native";
 import React, { useEffect } from "react";
-import { Cache, gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import ScreenLayout from "../components/ScreenLayout";
 import styled from "styled-components/native";
 import { useForm } from "react-hook-form";
 import useMe from "../hooks/useMe";
+import { Ionicons } from "@expo/vector-icons";
 
 const SEND_MESSAGE_MUTATION = gql`
   mutation sendMessage($payload: String!, $roomId: Int, $userId: Int) {
@@ -60,11 +61,23 @@ const Message = styled.Text`
 `;
 
 const TextInput = styled.TextInput`
-  margin-bottom: 30px;
-  width: 95%;
+  width: 90%;
   padding: 10px 20px;
   border-radius: 15px;
   border: 1.5px solid rgba(0, 0, 0, 0.2);
+  margin-right: 10px;
+`;
+
+const InputContainer = styled.View`
+  margin-bottom: 30px;
+  width: 95%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SendButton = styled.TouchableOpacity`
+  align-items: center;
 `;
 
 const Room = ({ route, navigation }: any) => {
@@ -165,32 +178,51 @@ const Room = ({ route, navigation }: any) => {
       </View>
     );
   };
-
+  const messages = [...(data?.seeRoom?.messages ?? [])].reverse();
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: "white" }}
-      behavior="height"
-      keyboardVerticalOffset={170}
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+      }}
+      behavior="padding"
+      keyboardVerticalOffset={70}
     >
       <ScreenLayout loading={loading}>
         <FlatList
-          style={{ width: "98%", paddingVertical: -10 }}
+          style={{ width: "98%", marginBottom: 10 }}
+          inverted
           ItemSeparatorComponent={() => <View style={{ height: 12 }}></View>}
-          data={data?.seeRoom?.messages}
+          data={messages}
           keyExtractor={(message) => message.id}
           renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
         />
-        <TextInput
-          placeholder="메세지를 입력하세요."
-          returnKeyLabel="보내기"
-          returnKeyType="send"
-          autoCompleteType="off"
-          autoCapitalize="none"
-          autoCorrect={false}
-          onChangeText={(text) => setValue("message", text)}
-          onSubmitEditing={handleSubmit(onValid)}
-          value={watch("message")}
-        />
+        <InputContainer>
+          <TextInput
+            placeholder="메세지를 입력하세요."
+            returnKeyLabel="보내기"
+            returnKeyType="send"
+            autoCompleteType="off"
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={(text) => setValue("message", text)}
+            onSubmitEditing={handleSubmit(onValid)}
+            value={watch("message")}
+          />
+          <SendButton
+            disabled={!Boolean(watch("message"))}
+            onPress={handleSubmit(onValid)}
+          >
+            <Ionicons
+              name="paper-plane"
+              size={22}
+              color={
+                !Boolean(watch("message")) ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,1)"
+              }
+            />
+          </SendButton>
+        </InputContainer>
       </ScreenLayout>
     </KeyboardAvoidingView>
   );
