@@ -1,9 +1,8 @@
 import { FlatList, KeyboardAvoidingView, View } from "react-native";
 import React, { useEffect } from "react";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { Cache, gql, useMutation, useQuery } from "@apollo/client";
 import ScreenLayout from "../components/ScreenLayout";
 import styled from "styled-components/native";
-import { mainTheme } from "../styles";
 import { useForm } from "react-hook-form";
 import useMe from "../hooks/useMe";
 
@@ -21,6 +20,7 @@ const SEND_MESSAGE_MUTATION = gql`
 const ROOM_QUERY = gql`
   query seeRoom($id: Int!) {
     seeRoom(id: $id) {
+      id
       messages {
         id
         payload
@@ -35,9 +35,11 @@ const ROOM_QUERY = gql`
 `;
 
 const MessageContainer: any = styled.View`
+  margin-right: 30px;
   padding: 0px 10px;
   flex-direction: ${(props: any) => (props.outGoing ? "row-reverse" : "row")};
   align-items: flex-end;
+  width: 95%;
 `;
 
 const Author = styled.View``;
@@ -52,14 +54,13 @@ const Avatar = styled.Image`
 
 const Message = styled.Text`
   padding: 7px 10px;
-  margin: 0px 7px 0px 20px;
+  margin: 0px 7px 0px 7px;
   border-radius: 10px;
   border: 1.5px solid rgba(0, 0, 0, 0.2);
 `;
 
 const TextInput = styled.TextInput`
   margin-bottom: 30px;
-  height: 40px;
   width: 95%;
   padding: 10px 20px;
   border-radius: 15px;
@@ -67,32 +68,28 @@ const TextInput = styled.TextInput`
 `;
 
 const Room = ({ route, navigation }: any) => {
-  const {
-    data: {
-      me: { avatar: meAvatar, userName: meUserName },
-    },
-  } = useMe();
-
-  const { register, setValue, handleSubmit, getValues } = useForm();
-
+  const { data: meData } = useMe();
+  const { register, setValue, handleSubmit, getValues, watch } = useForm();
   const updateSendMessage = (cache: any, result: any) => {
     const {
       data: {
         sendMessage: { ok, id },
       },
     } = result;
-    if (ok && meAvatar && meUserName) {
+    if (ok && meData) {
       const { message } = getValues();
+      setValue("message", "");
       const messageObj = {
-        id: id,
+        id,
         payload: message,
         user: {
-          userName: meUserName,
-          avatar: meAvatar,
+          userName: meData.me.userName,
+          avatar: meData.me.avatar,
         },
         read: true,
         __typename: "Message",
       };
+
       const messageFragment = cache.writeFragment({
         fragment: gql`
           fragment NewMessage on Message {
@@ -107,18 +104,19 @@ const Room = ({ route, navigation }: any) => {
         `,
         data: messageObj,
       });
+
       cache.modify({
         id: `Room:${route.params.id}`,
         fields: {
-          message(prev: any) {
-            return [messageFragment, ...prev];
+          messages(prev: any) {
+            return [...prev, messageFragment];
           },
         },
       });
     }
   };
 
-  const [sendMessageMutation, { loading: sendMessageLoading }] = useMutation(
+  const [sendMessageMutation, { loading: sendingMessage }] = useMutation(
     SEND_MESSAGE_MUTATION,
     {
       update: updateSendMessage,
@@ -130,12 +128,9 @@ const Room = ({ route, navigation }: any) => {
       id: route?.params?.id,
     },
   });
-  useEffect(() => {
-    register("message", { required: true });
-  }, [register]);
 
   const onValid = ({ message }: any) => {
-    if (!sendMessageLoading) {
+    if (!sendingMessage) {
       sendMessageMutation({
         variables: {
           payload: message,
@@ -144,6 +139,9 @@ const Room = ({ route, navigation }: any) => {
       });
     }
   };
+  useEffect(() => {
+    register("message", { required: true });
+  }, [register]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -153,26 +151,30 @@ const Room = ({ route, navigation }: any) => {
 
   const renderItem = ({ item: message }: any) => {
     return (
-      <MessageContainer
-        outGoing={message.user.userName !== route?.params?.talkingTo?.userName}
-      >
-        <Author>
-          <Avatar source={{ uri: message.user.avatar }} />
-        </Author>
-        <Message>{message.payload}</Message>
-      </MessageContainer>
+      <View style={{ alignItems: "center" }}>
+        <MessageContainer
+          outGoing={
+            message.user.userName !== route?.params?.talkingTo?.userName
+          }
+        >
+          <Author>
+            <Avatar source={{ uri: message.user.avatar }} />
+          </Author>
+          <Message>{message.payload}</Message>
+        </MessageContainer>
+      </View>
     );
   };
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: "white" }}
-      behavior="padding"
-      keyboardVerticalOffset={80}
+      behavior="height"
+      keyboardVerticalOffset={170}
     >
       <ScreenLayout loading={loading}>
         <FlatList
-          style={{ width: "100%", marginBottom: 20 }}
+          style={{ width: "98%", paddingVertical: -10 }}
           ItemSeparatorComponent={() => <View style={{ height: 12 }}></View>}
           data={data?.seeRoom?.messages}
           keyExtractor={(message) => message.id}
@@ -187,6 +189,7 @@ const Room = ({ route, navigation }: any) => {
           autoCorrect={false}
           onChangeText={(text) => setValue("message", text)}
           onSubmitEditing={handleSubmit(onValid)}
+          value={watch("message")}
         />
       </ScreenLayout>
     </KeyboardAvoidingView>
