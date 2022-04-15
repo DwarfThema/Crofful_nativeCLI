@@ -1,9 +1,11 @@
-import { FlatList, KeyboardAvoidingView } from "react-native";
+import { FlatList, KeyboardAvoidingView, View } from "react-native";
 import React, { useEffect } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import ScreenLayout from "../components/ScreenLayout";
 import styled from "styled-components/native";
 import { mainTheme } from "../styles";
+import { useForm } from "react-hook-form";
+import useMe from "../hooks/useMe";
 
 const SEND_MESSAGE_MUTATION = gql`
   mutation sendMessage($payload: String!, $roomId: Int, $userId: Int) {
@@ -13,6 +15,8 @@ const SEND_MESSAGE_MUTATION = gql`
     }
   }
 `;
+
+//userId 를 이용해서 DM 할 때 방을 만들 수 있도록 해보자.
 
 const ROOM_QUERY = gql`
   query seeRoom($id: Int!) {
@@ -34,7 +38,6 @@ const MessageContainer: any = styled.View`
   padding: 0px 10px;
   flex-direction: ${(props: any) => (props.outGoing ? "row-reverse" : "row")};
   align-items: flex-end;
-  margin: 5px 0;
 `;
 
 const Author = styled.View``;
@@ -49,7 +52,7 @@ const Avatar = styled.Image`
 
 const Message = styled.Text`
   padding: 7px 10px;
-  margin: 0px 7px;
+  margin: 0px 7px 0px 20px;
   border-radius: 10px;
   border: 1.5px solid rgba(0, 0, 0, 0.2);
 `;
@@ -64,11 +67,83 @@ const TextInput = styled.TextInput`
 `;
 
 const Room = ({ route, navigation }: any) => {
+  const {
+    data: {
+      me: { avatar: meAvatar, userName: meUserName },
+    },
+  } = useMe();
+
+  const { register, setValue, handleSubmit, getValues } = useForm();
+
+  const updateSendMessage = (cache: any, result: any) => {
+    const {
+      data: {
+        sendMessage: { ok, id },
+      },
+    } = result;
+    if (ok && meAvatar && meUserName) {
+      const { message } = getValues();
+      const messageObj = {
+        id: id,
+        payload: message,
+        user: {
+          userName: meUserName,
+          avatar: meAvatar,
+        },
+        read: true,
+        __typename: "Message",
+      };
+      const messageFragment = cache.writeFragment({
+        fragment: gql`
+          fragment NewMessage on Message {
+            id
+            payload
+            user {
+              userName
+              avatar
+            }
+            read
+          }
+        `,
+        data: messageObj,
+      });
+      cache.modify({
+        id: `Room:${route.params.id}`,
+        fields: {
+          message(prev: any) {
+            return [messageFragment, ...prev];
+          },
+        },
+      });
+    }
+  };
+
+  const [sendMessageMutation, { loading: sendMessageLoading }] = useMutation(
+    SEND_MESSAGE_MUTATION,
+    {
+      update: updateSendMessage,
+    }
+  );
+
   const { data, loading } = useQuery(ROOM_QUERY, {
     variables: {
       id: route?.params?.id,
     },
   });
+  useEffect(() => {
+    register("message", { required: true });
+  }, [register]);
+
+  const onValid = ({ message }: any) => {
+    if (!sendMessageLoading) {
+      sendMessageMutation({
+        variables: {
+          payload: message,
+          roomId: route?.params?.id,
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -97,8 +172,8 @@ const Room = ({ route, navigation }: any) => {
     >
       <ScreenLayout loading={loading}>
         <FlatList
-          inverted
           style={{ width: "100%", marginBottom: 20 }}
+          ItemSeparatorComponent={() => <View style={{ height: 12 }}></View>}
           data={data?.seeRoom?.messages}
           keyExtractor={(message) => message.id}
           renderItem={renderItem}
@@ -110,10 +185,11 @@ const Room = ({ route, navigation }: any) => {
           autoCompleteType="off"
           autoCapitalize="none"
           autoCorrect={false}
+          onChangeText={(text) => setValue("message", text)}
+          onSubmitEditing={handleSubmit(onValid)}
         />
       </ScreenLayout>
     </KeyboardAvoidingView>
   );
 };
-
 export default Room;

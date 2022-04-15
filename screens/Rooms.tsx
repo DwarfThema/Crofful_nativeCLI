@@ -1,5 +1,5 @@
 import { FlatList, Image, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { ROOM_FRAGMENT } from "../fragments";
 import ScreenLayout from "../components/ScreenLayout";
