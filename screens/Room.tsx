@@ -1,6 +1,12 @@
 import { FlatList, KeyboardAvoidingView, View } from "react-native";
-import React, { useEffect } from "react";
-import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
+import React, { useEffect, useState } from "react";
+import {
+  gql,
+  useApolloClient,
+  useMutation,
+  useQuery,
+  useSubscription,
+} from "@apollo/client";
 import ScreenLayout from "../components/ScreenLayout";
 import styled from "styled-components/native";
 import { useForm } from "react-hook-form";
@@ -16,6 +22,7 @@ const ROOM_UPDATES = gql`
         userName
         avatar
       }
+      read
     }
   }
 `;
@@ -156,16 +163,54 @@ const Room = ({ route, navigation }: any) => {
     },
   });
 
+  const client = useApolloClient();
+  const myUpdateQuery = (prevQuery: any, options: any) => {
+    const {
+      subscriptionData: {
+        data: { roomUpdates: message },
+      },
+    } = options;
+
+    if (message.id) {
+      const messageFragment = client.cache.writeFragment({
+        fragment: gql`
+          fragment NewMessage on Message {
+            id
+            payload
+            user {
+              userName
+              avatar
+            }
+            read
+          }
+        `,
+        data: message,
+      });
+      client.cache.modify({
+        id: `Room:${route.params.id}`,
+        fields: {
+          messages(prev) {
+            return [...prev, messageFragment];
+          },
+        },
+      });
+    }
+  };
+
+  const [subscribed, setSubscribed] = useState(false);
+
   useEffect(() => {
-    if (data?.seeRoom) {
+    if (data?.seeRoom && !subscribed) {
       subscribeToMore({
         document: ROOM_UPDATES,
         variables: {
           id: route?.params?.id,
         },
+        updateQuery: myUpdateQuery, //업데이트할 내용 넣으면 됨
       });
+      setSubscribed(true);
     }
-  }, []);
+  }, [data, subscribed]);
 
   const onValid = ({ message }: any) => {
     if (!sendingMessage) {
