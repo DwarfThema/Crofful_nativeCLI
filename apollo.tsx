@@ -3,12 +3,18 @@ import {
   createHttpLink,
   InMemoryCache,
   makeVar,
+  split,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
-import { offsetLimitPagination } from "@apollo/client/utilities";
+import {
+  getMainDefinition,
+  offsetLimitPagination,
+} from "@apollo/client/utilities";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createUploadLink } from "apollo-upload-client";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { createClient } from "graphql-ws";
 
 export const isLoggedinVar = makeVar(false);
 export const tokenVar = makeVar("");
@@ -26,14 +32,6 @@ export const logUserOut = async () => {
   isLoggedinVar(false);
   tokenVar("");
 };
-
-const httpLink = createHttpLink({
-  uri: "http://1c12-211-54-66-89.ngrok.io/graphql",
-});
-
-const uploadHttpLink = createUploadLink({
-  uri: "http://localhost:4000/graphql",
-});
 
 const authLink = setContext((_, { headers }) => {
   return {
@@ -63,8 +61,42 @@ const onErrorLink = onError(({ graphQLErrors, networkError }) => {
   }
 });
 
+const httpLink = createHttpLink({
+  uri: "http://1c12-211-54-66-89.ngrok.io/graphql",
+});
+
+const uploadHttpLink = createUploadLink({
+  uri: "http://localhost:4000/graphql",
+});
+
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: "ws://localhost:4000/subscriptions",
+    connectionParams: {
+      authToken: tokenVar(),
+      //authentication 과정
+    },
+  })
+);
+//wsLink 결과물
+
+const httpLinks = authLink.concat(onErrorLink).concat(uploadHttpLink);
+//httpLink 로 나뉜 결과물 (split communication)
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  httpLinks
+);
+
 const client = new ApolloClient({
-  link: authLink.concat(onErrorLink).concat(uploadHttpLink),
+  link: splitLink,
   cache,
 });
 
