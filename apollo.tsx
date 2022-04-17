@@ -66,12 +66,12 @@ const httpLink = createHttpLink({
 });
 
 const uploadHttpLink = createUploadLink({
-  uri: "http://localhost:4000/graphql",
+  uri: "http://e8aa-14-36-37-141.ngrok.io/graphql",
 });
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://localhost:4000/subscriptions",
+    url: "ws://e8aa-14-36-37-141.ngrok.io/graphql",
     connectionParams: {
       authToken: tokenVar(),
       //authentication 과정
