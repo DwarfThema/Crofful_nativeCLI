@@ -65,11 +65,11 @@ const httpLink = createHttpLink({
 });
 
 const uploadHttpLink = createUploadLink({
-  uri: "http://e8aa-14-36-37-141.ngrok.io/graphql",
+  uri: "http://efcd-14-36-37-141.ngrok.io/graphql",
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://e8aa-14-36-37-141.ngrok.io/graphql",
+  uri: "ws://efcd-14-36-37-141.ngrok.io/graphql",
   options: {
     connectionParams: () => ({
       token: tokenVar(),

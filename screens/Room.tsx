@@ -114,7 +114,7 @@ const Room = ({ route, navigation }: any) => {
       const { message } = getValues();
       setValue("message", "");
       const messageObj = {
-        id,
+        id: id,
         payload: message,
         user: {
           userName: meData.me.userName,
@@ -157,7 +157,11 @@ const Room = ({ route, navigation }: any) => {
     }
   );
 
-  const { data, loading, subscribeToMore } = useQuery(ROOM_QUERY, {
+  const {
+    data,
+    loading: QueryLoading,
+    subscribeToMore,
+  } = useQuery(ROOM_QUERY, {
     variables: {
       id: route?.params?.id,
     },
@@ -172,7 +176,7 @@ const Room = ({ route, navigation }: any) => {
     } = options;
 
     if (message.id) {
-      const incomingMessage = client.cache.writeFragment({
+      const incomingMessage: any = client.cache.writeFragment({
         fragment: gql`
           fragment NewMessage on Message {
             id
@@ -189,16 +193,18 @@ const Room = ({ route, navigation }: any) => {
       client.cache.modify({
         id: `Room:${route.params.id}`,
         fields: {
-          messages(prev) {
+          messages(prev: any) {
             const existingMessage = prev.find(
-              (aMessage: any) => aMessage.__ref === incomingMessage?.__ref
+              (aMessage: any) => aMessage.__ref === incomingMessage.__ref
             );
-            console.log(existingMessage);
+            console.log("에이", prev);
+            console.log("인커밍", incomingMessage.__ref);
 
             if (existingMessage) {
               return prev;
+            } else {
+              return [...prev, incomingMessage];
             }
-            return [...prev, incomingMessage];
           },
         },
       });
@@ -266,7 +272,7 @@ const Room = ({ route, navigation }: any) => {
       behavior="padding"
       keyboardVerticalOffset={70}
     >
-      <ScreenLayout loading={loading}>
+      <ScreenLayout loading={QueryLoading}>
         <FlatList
           style={{ width: "98%", marginBottom: 10 }}
           inverted
